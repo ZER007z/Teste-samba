@@ -1,0 +1,2583 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Samba Export — Hub da Equipe</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap');
+
+    :root {
+      --orange: #FA8200;
+      --orange-light: #FFF3E0;
+      --orange-mid: #FFE0B2;
+      --black: #1a1a1a;
+      --text: #2d2d2d;
+      --text-light: #666;
+      --border: #e0e0e0;
+      --bg: #f5f5f5;
+      --white: #ffffff;
+      --green: #2e7d32;
+      --green-light: #E8F5E9;
+      --red: #c62828;
+      --red-light: #FFEBEE;
+      --blue: #1565C0;
+      --blue-light: #E3F2FD;
+      --yellow-light: #FFFDE7;
+      --yellow: #F9A825;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    /* HEADER */
+    .header {
+      background: var(--white);
+      border-bottom: 4px solid var(--orange);
+      padding: 16px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    .logo {
+      font-size: 22px;
+      font-weight: 900;
+      color: var(--black);
+      letter-spacing: -0.5px;
+    }
+
+    .logo span {
+      color: var(--orange);
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .header-tag {
+      background: var(--orange-light);
+      color: var(--orange);
+      font-size: 10px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 20px;
+      letter-spacing: 1px;
+    }
+
+    /* TABS NAV */
+    .tabs-nav {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 0 28px;
+      display: flex;
+      gap: 0;
+      overflow-x: auto;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+    }
+
+    .tab-btn {
+      padding: 14px 18px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 11px;
+      border: none;
+      background: transparent;
+      color: var(--text-light);
+      transition: all 0.2s;
+      white-space: nowrap;
+      border-bottom: 3px solid transparent;
+      letter-spacing: 0.3px;
+    }
+
+    .tab-btn:hover {
+      color: var(--orange);
+    }
+
+    .tab-btn.active {
+      color: var(--orange);
+      border-bottom: 3px solid var(--orange);
+      background: var(--orange-light);
+    }
+
+    /* CONTENT */
+    .content {
+      padding: 28px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section {
+      display: none;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    /* PAGE TITLE */
+    .page-title {
+      font-size: 24px;
+      font-weight: 900;
+      color: var(--black);
+      margin-bottom: 4px;
+    }
+
+    .page-title span {
+      color: var(--orange);
+    }
+
+    .page-sub {
+      color: var(--text-light);
+      font-size: 13px;
+      margin-bottom: 28px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* CARDS */
+    .card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+    }
+
+    .card-orange {
+      border-left: 4px solid var(--orange);
+      background: var(--orange-light);
+    }
+
+    .card-green {
+      border-left: 4px solid var(--green);
+      background: var(--green-light);
+    }
+
+    .card-red {
+      border-left: 4px solid var(--red);
+      background: var(--red-light);
+    }
+
+    .card-blue {
+      border-left: 4px solid var(--blue);
+      background: var(--blue-light);
+    }
+
+    .card-yellow {
+      border-left: 4px solid var(--yellow);
+      background: var(--yellow-light);
+    }
+
+    .card-title {
+      font-weight: 800;
+      font-size: 14px;
+      margin-bottom: 10px;
+      color: var(--black);
+    }
+
+    .card-title.orange {
+      color: var(--orange);
+    }
+
+    .card-title.green {
+      color: var(--green);
+    }
+
+    .card-title.red {
+      color: var(--red);
+    }
+
+    .card-title.blue {
+      color: var(--blue);
+    }
+
+    /* GRID */
+    .grid2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .grid3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 14px;
+    }
+
+    /* BADGE */
+    .badge {
+      display: inline-block;
+      border-radius: 6px;
+      padding: 3px 10px;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+    }
+
+    .badge-orange {
+      background: var(--orange);
+      color: #fff;
+    }
+
+    .badge-green {
+      background: var(--green);
+      color: #fff;
+    }
+
+    .badge-red {
+      background: var(--red);
+      color: #fff;
+    }
+
+    .badge-blue {
+      background: var(--blue);
+      color: #fff;
+    }
+
+    .badge-gray {
+      background: #e0e0e0;
+      color: #666;
+    }
+
+    .badge-outline {
+      border: 2px solid var(--orange);
+      color: var(--orange);
+      background: transparent;
+    }
+
+    /* PROFILE CARDS */
+    .profile-card {
+      background: var(--white);
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      transition: border-color 0.2s;
+    }
+
+    .profile-card:hover {
+      border-color: var(--orange);
+    }
+
+    .profile-avatar {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: var(--orange);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      font-weight: 900;
+      margin: 0 auto 12px;
+    }
+
+    .profile-name {
+      font-weight: 800;
+      font-size: 14px;
+      color: var(--black);
+      margin-bottom: 4px;
+    }
+
+    .profile-role {
+      font-size: 11px;
+      color: var(--orange);
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .profile-desc {
+      font-size: 11px;
+      color: var(--text-light);
+      line-height: 1.6;
+      margin-bottom: 12px;
+    }
+
+    .profile-email {
+      background: var(--bg);
+      border-radius: 6px;
+      padding: 6px 10px;
+      font-size: 11px;
+      font-family: monospace;
+      color: var(--orange);
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    /* SCRIPTS */
+    .script-container {
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 12px;
+      border: 1px solid var(--border);
+    }
+
+    .script-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 18px;
+      cursor: pointer;
+      background: var(--white);
+      transition: background 0.2s;
+    }
+
+    .script-header:hover {
+      background: var(--bg);
+    }
+
+    .script-header.open {
+      background: var(--orange-light);
+    }
+
+    .script-body {
+      display: none;
+      padding: 0 18px 18px;
+      background: var(--white);
+    }
+
+    .script-body.open {
+      display: block;
+    }
+
+    .script-lang {
+      border-radius: 8px;
+      padding: 14px;
+      margin-top: 12px;
+    }
+
+    .script-lang-en {
+      background: #E8F5E9;
+      border: 1px solid #A5D6A7;
+    }
+
+    .script-lang-pt {
+      background: #E3F2FD;
+      border: 1px solid #90CAF9;
+    }
+
+    .lang-tag {
+      display: inline-block;
+      border-radius: 4px;
+      padding: 3px 10px;
+      font-size: 10px;
+      font-weight: 800;
+      margin-bottom: 8px;
+      letter-spacing: 1px;
+    }
+
+    .tag-en {
+      background: var(--green);
+      color: #fff;
+    }
+
+    .tag-pt {
+      background: var(--blue);
+      color: #fff;
+    }
+
+    .script-text {
+      font-family: monospace;
+      font-size: 12px;
+      line-height: 1.8;
+      color: var(--text);
+      white-space: pre-wrap;
+    }
+
+    /* FAQ */
+    .faq-item {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      margin-bottom: 10px;
+      overflow: hidden;
+      background: var(--white);
+    }
+
+    .faq-q {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 20px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 13px;
+      color: var(--text);
+      transition: background 0.2s;
+    }
+
+    .faq-q:hover {
+      background: var(--bg);
+    }
+
+    .faq-q.open {
+      background: var(--orange-light);
+      color: var(--orange);
+    }
+
+    .faq-a {
+      display: none;
+      padding: 0 20px 18px;
+      font-size: 12px;
+      line-height: 1.8;
+      color: var(--text);
+    }
+
+    .faq-a.open {
+      display: block;
+    }
+
+    .faq-a ul {
+      margin: 8px 0 8px 20px;
+    }
+
+    .faq-a li {
+      margin-bottom: 4px;
+    }
+
+    .faq-cat {
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      color: var(--orange);
+      margin: 24px 0 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .faq-cat::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* FUNNEL */
+    .funnel-step {
+      display: flex;
+      align-items: stretch;
+      margin-bottom: 3px;
+    }
+
+    .funnel-num {
+      min-width: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 14px;
+      color: #fff;
+    }
+
+    .funnel-body {
+      flex: 1;
+      padding: 12px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--white);
+      border: 1px solid var(--border);
+    }
+
+    /* FLOW NODES */
+    .flow {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .flow-item {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      padding: 12px 16px;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 6px;
+    }
+
+    .flow-dot {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 12px;
+      flex-shrink: 0;
+    }
+
+    /* FILTER */
+    .filter-q {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--orange);
+      border-radius: 8px;
+      padding: 14px 16px;
+      margin-bottom: 10px;
+    }
+
+    .filter-q input {
+      margin-top: 8px;
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 8px 12px;
+      color: var(--text);
+      font-size: 12px;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .filter-q input:focus {
+      outline: none;
+      border-color: var(--orange);
+    }
+
+    /* EXAMPLE */
+    .ex-wrap {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+
+    .ex-header {
+      background: var(--orange);
+      color: #fff;
+      padding: 14px 20px;
+      font-weight: 800;
+      font-size: 13px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .ex-body {
+      padding: 20px;
+      background: var(--white);
+      display: none;
+    }
+
+    .ex-body.open {
+      display: block;
+    }
+
+    /* RULES */
+    .rule-item {
+      display: flex;
+      gap: 14px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+      align-items: flex-start;
+    }
+
+    .rule-num {
+      background: var(--orange);
+      color: #fff;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 12px;
+      flex-shrink: 0;
+    }
+
+    /* TABLE */
+    .mini-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+
+    .mini-table th {
+      background: var(--orange);
+      color: #fff;
+      padding: 8px 12px;
+      text-align: left;
+      font-weight: 700;
+    }
+
+    .mini-table td {
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .mini-table tr:nth-child(even) td {
+      background: var(--bg);
+    }
+
+    /* TIP / WARN */
+    .tip {
+      background: var(--green-light);
+      border: 1px solid #A5D6A7;
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 12px;
+      margin-top: 12px;
+      color: var(--green);
+    }
+
+    .warn {
+      background: var(--red-light);
+      border: 1px solid #EF9A9A;
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 12px;
+      margin-top: 12px;
+      color: var(--red);
+    }
+
+    .info {
+      background: var(--blue-light);
+      border: 1px solid #90CAF9;
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 12px;
+      margin-top: 12px;
+      color: var(--blue);
+    }
+
+    .note {
+      background: var(--yellow-light);
+      border: 1px solid #FFE082;
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 12px;
+      margin-top: 12px;
+      color: #7B5800;
+    }
+
+    /* LINK BUTTON */
+    .btn {
+      display: inline-block;
+      border-radius: 8px;
+      padding: 8px 18px;
+      font-size: 12px;
+      font-weight: 800;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .btn-orange {
+      background: var(--orange);
+      color: #fff;
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 2px solid var(--orange);
+      color: var(--orange);
+    }
+
+    .btn-sm {
+      padding: 5px 12px;
+      font-size: 10px;
+    }
+
+    /* STATUS PILLS */
+    .pill {
+      display: inline-block;
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-size: 10px;
+      font-weight: 700;
+      margin: 3px;
+      border: 1px solid;
+    }
+
+    /* GLOSSARY */
+    .glossary-item {
+      display: flex;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .glossary-term {
+      font-weight: 800;
+      color: var(--orange);
+      min-width: 140px;
+      font-size: 12px;
+    }
+
+    .glossary-def {
+      font-size: 12px;
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    /* ALERT BOX */
+    .alert-box {
+      background: var(--orange);
+      color: #fff;
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin-bottom: 24px;
+    }
+
+    .alert-box strong {
+      font-size: 15px;
+    }
+
+    /* SCROLLBAR */
+    ::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #ccc;
+      border-radius: 3px;
+    }
+
+    /* MOBILE */
+    @media (max-width: 768px) {
+
+      .grid2,
+      .grid3 {
+        grid-template-columns: 1fr;
+      }
+
+      .content {
+        padding: 16px;
+      }
+
+      .header {
+        padding: 12px 16px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="header">
+    <div class="logo"><span>samba</span>EXPORT</div>
+    <div class="header-right">
+      <span class="header-tag">HUB DA EQUIPE</span>
+      <span class="header-tag">v3.0</span>
+    </div>
+  </div>
+
+  <div class="tabs-nav">
+    <button class="tab-btn active" onclick="showTab('inicio',this)">🏠 INÍCIO</button>
+    <button class="tab-btn" onclick="showTab('mapa',this)">🗺️ MAPA DE LEADS</button>
+    <button class="tab-btn" onclick="showTab('filtro',this)">🔍 FILTRO COMPRADOR</button>
+    <button class="tab-btn" onclick="showTab('scripts',this)">💬 SCRIPTS</button>
+    <button class="tab-btn" onclick="showTab('exemplos',this)">📦 EXEMPLOS PRÁTICOS</button>
+    <button class="tab-btn" onclick="showTab('faq_vendas',this)">❓ FAQ — VENDAS</button>
+    <button class="tab-btn" onclick="showTab('faq_commo',this)">🌾 FAQ — COMMODITIES</button>
+    <button class="tab-btn" onclick="showTab('glossario',this)">📖 GLOSSÁRIO</button>
+    <button class="tab-btn" onclick="showTab('crm',this)">📋 REGRAS CRM</button>
+    <button class="tab-btn" onclick="showTab('equipe',this)">👥 EQUIPE</button>
+    <button class="tab-btn" onclick=" window.location.href='SAMBA_ORGANIZACAO_IA.html'">👥IA</button>
+  </div>
+
+  <div class=" content">
+
+    <!-- ============================================================ -->
+    <!-- ABA 1: INÍCIO -->
+    <!-- ============================================================ -->
+    <div id="inicio" class="section active">
+      <div class="page-title">Bem-vindo ao Hub da <span>Equipe Samba Export</span></div>
+      <div class="page-sub">Tudo que você precisa para trabalhar no LinkedIn como se fosse o Marcelo, o Nívio ou o
+        Leonardo. Do zero.</div>
+
+      <div class="alert-box">
+        <strong>📢 Mensagem dos sócios para a equipe</strong><br><br>
+        Vocês vão operar os Linkedins de Marcelo, Nívio e Leonardo. Vão ler mensagens, responder, qualificar leads e
+        passar pra frente.<br><br>
+        <strong>Não precisam saber tudo sobre commodities. Precisam saber seguir o processo.</strong><br>
+        Este hub foi feito para isso. Qualquer dúvida: verifique aqui primeiro. Depois pergunte.
+      </div>
+
+      <div class="grid3" style="margin-bottom:28px;">
+        <div class="card card-orange">
+          <div class="card-title orange">🎯 Seu único objetivo</div>
+          <p style="font-size:12px;line-height:1.8;color:#5d3a00;">Identificar se a pessoa é um
+            <strong>comprador</strong> ou um <strong>potencial Finder</strong>, responder com o script correto e
+            migrar
+            para o WhatsApp. Só isso. O resto os sócios fazem.
+          </p>
+        </div>
+        <div class="card card-green">
+          <div class="card-title green">✅ O que você pode fazer</div>
+          <ul style="font-size:12px;line-height:1.8;color:#1b5e20;padding-left:16px;">
+            <li>Responder mensagens no LinkedIn</li>
+            <li>Usar os scripts deste hub</li>
+            <li>Qualificar o lead (perguntar 3 coisas)</li>
+            <li>Criar grupo no WhatsApp</li>
+            <li>Registrar no CRM</li>
+          </ul>
+        </div>
+        <div class="card card-red">
+          <div class="card-title red">⛔ O que você NÃO pode fazer</div>
+          <ul style="font-size:12px;line-height:1.8;color:#7f0000;padding-left:16px;">
+            <li>Inventar preços ou propostas</li>
+            <li>Mandar PDF sem qualificar primeiro</li>
+            <li>Avançar sem NCDA assinado</li>
+            <li>Improvisar scripts</li>
+            <li>Responder sobre condições técnicas complexas</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="grid2" style="margin-bottom:28px;">
+        <div class="card">
+          <div class="card-title">🧭 Como navegar este hub</div>
+          <div class="flow">
+            <div class="flow-item">
+              <div class="flow-dot" style="background:var(--orange);color:#fff;">1</div>
+              <div><strong>Recebeu uma mensagem?</strong><br><span style="color:var(--text-light);font-size:11px;">Vá
+                  para <strong>Mapa de Leads</strong> → identifique o tipo de pessoa</span></div>
+            </div>
+            <div class="flow-item">
+              <div class="flow-dot" style="background:var(--orange);color:#fff;">2</div>
+              <div><strong>Não sabe o que dizer?</strong><br><span style="color:var(--text-light);font-size:11px;">Vá
+                  para <strong>Scripts</strong> → copie e cole o correto</span></div>
+            </div>
+            <div class="flow-item">
+              <div class="flow-dot" style="background:var(--orange);color:#fff;">3</div>
+              <div><strong>Lead pediu preço de algo?</strong><br><span
+                  style="color:var(--text-light);font-size:11px;">Vá para <strong>Filtro Comprador</strong> → faça as
+                  3
+                  perguntas primeiro</span></div>
+            </div>
+            <div class="flow-item">
+              <div class="flow-dot" style="background:var(--orange);color:#fff;">4</div>
+              <div><strong>Não entende o que ele pediu?</strong><br><span
+                  style="color:var(--text-light);font-size:11px;">Vá para <strong>FAQ Commodities</strong> ou
+                  <strong>Glossário</strong></span></div>
+            </div>
+            <div class="flow-item">
+              <div class="flow-dot" style="background:var(--orange);color:#fff;">5</div>
+              <div><strong>Dúvida de vendas ou processo?</strong><br><span
+                  style="color:var(--text-light);font-size:11px;">Vá para <strong>FAQ Vendas</strong></span></div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">⚡ Regras de ouro — decorar de cabeça</div>
+          <div style="display:flex;flex-direction:column;gap:8px;margin-top:4px;">
+            <div
+              style="display:flex;gap:10px;align-items:flex-start;padding:8px;background:var(--bg);border-radius:6px;">
+              <span style="font-size:18px;">1️⃣</span><span style="font-size:12px;"><strong>Nunca mandar PDF sem
+                  saber:</strong> qual commodity, qual volume, qual porto</span>
+            </div>
+            <div
+              style="display:flex;gap:10px;align-items:flex-start;padding:8px;background:var(--bg);border-radius:6px;">
+              <span style="font-size:18px;">2️⃣</span><span style="font-size:12px;"><strong>Nenhuma mensagem sem
+                  resposta</strong> por mais de 24 horas</span>
+            </div>
+            <div
+              style="display:flex;gap:10px;align-items:flex-start;padding:8px;background:var(--bg);border-radius:6px;">
+              <span style="font-size:18px;">3️⃣</span><span style="font-size:12px;"><strong>Toda mensagem termina com
+                  um
+                  próximo passo:</strong> "Would it be easier on WhatsApp?"</span>
+            </div>
+            <div
+              style="display:flex;gap:10px;align-items:flex-start;padding:8px;background:var(--bg);border-radius:6px;">
+              <span style="font-size:18px;">4️⃣</span><span style="font-size:12px;"><strong>Scripts em inglês são
+                  fixos</strong> — copiar e colar, nunca traduzir na cabeça</span>
+            </div>
+            <div
+              style="display:flex;gap:10px;align-items:flex-start;padding:8px;background:var(--bg);border-radius:6px;">
+              <span style="font-size:18px;">5️⃣</span><span style="font-size:12px;"><strong>Quem não é
+                  comprador</strong> → apresentar o Programa Finder antes de fechar</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="background:var(--bg);">
+        <div class="card-title">🏃 Navegação rápida por situação</div>
+        <div class="grid3" style="margin-top:12px;">
+          <button onclick="showTabByBtn('mapa')" class="btn btn-outline" style="width:100%;">Alguém curtiu meu post
+            →</button>
+          <button onclick="showTabByBtn('scripts')" class="btn btn-outline" style="width:100%;">Preciso de um script
+            agora →</button>
+          <button onclick="showTabByBtn('filtro')" class="btn btn-outline" style="width:100%;">Lead pediu preço
+            →</button>
+          <button onclick="showTabByBtn('faq_vendas')" class="btn btn-outline" style="width:100%;">Tenho uma dúvida de
+            vendas →</button>
+          <button onclick="showTabByBtn('faq_commo')" class="btn btn-outline" style="width:100%;">Não entendi o que
+            ele
+            pediu →</button>
+          <button onclick="showTabByBtn('glossario')" class="btn btn-outline" style="width:100%;">O que significa essa
+            sigla? →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- ABA 2: MAPA DE LEADS -->
+    <!-- ============================================================ -->
+    <div id="mapa" class="section">
+      <div class="page-title">🗺️ Mapa de <span>Leads</span></div>
+      <div class="page-sub">Como identificar quem é a pessoa e o que fazer com ela. Simples e direto.</div>
+
+      <div class="note" style="margin-bottom:24px;">
+        <strong>💡 O que é "Conexão Pós-Ativa"?</strong><br>
+        É quando <strong>NÓS pedimos conexão</strong> para alguém no LinkedIn e ele aceitou. "Pós" porque foi depois
+        de
+        uma ação nossa. Assim que ele aceitar → envie o Script A em até 24 horas. Não espere ele falar primeiro.
+      </div>
+
+      <div class="grid2" style="margin-bottom:28px;">
+        <div class="card" style="border-top:4px solid #1565C0;">
+          <div class="card-title blue">👤 PERFIL 1 — O ENGAJADOR</div>
+          <div style="font-size:12px;line-height:1.8;">
+            <strong>Quem é:</strong> Agrônomo, consultor, despachante, corretor de grãos, profissional do agro<br>
+            <strong>Como chegou:</strong> Curtiu, comentou ou compartilhou um post<br>
+            <strong>Ele é o comprador?</strong> <span style="color:var(--red);font-weight:700;">NÃO.</span> Mas ele
+            pode
+            CONHECER o comprador<br><br>
+            <div style="background:var(--blue-light);border-radius:6px;padding:10px;margin-top:6px;">
+              <strong style="color:var(--blue);">→ OBJETIVO:</strong> Recrutá-lo para o Programa Finder<br>
+              <strong style="color:var(--blue);">→ Script a usar:</strong> Script G (Pitch Finder)
+            </div>
+          </div>
+        </div>
+        <div class="card" style="border-top:4px solid var(--red);">
+          <div class="card-title red">👤 PERFIL 2 — O COMPRADOR / MANDATÁRIO</div>
+          <div style="font-size:12px;line-height:1.8;">
+            <strong>Quem é:</strong> Importador direto, trader internacional, empresa que compra commodities<br>
+            <strong>Como chegou:</strong> Pediu conexão ou nós pedimos<br>
+            <strong>Ele é o comprador?</strong> <span style="color:var(--green);font-weight:700;">SIM (ou representa
+              um)</span><br><br>
+            <div style="background:var(--red-light);border-radius:6px;padding:10px;margin-top:6px;">
+              <strong style="color:var(--red);">→ OBJETIVO:</strong> Qualificar e migrar para WhatsApp<br>
+              <strong style="color:var(--red);">→ Scripts a usar:</strong> A, B, C, D, E
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="page-title" style="font-size:17px;margin-bottom:12px;">Como o Lead Pode Chegar — 8 Situações</div>
+      <div class="grid2" style="margin-bottom:28px;">
+        <div class="card" style="border-left:3px solid #1565C0;">
+          <div style="display:flex;justify-content:space-between;margin-bottom:8px;"><strong>CURTIU UM
+              POST</strong><span class="badge badge-blue">PERFIL 1</span></div>
+          <div style="font-size:11px;color:var(--text-light);margin-bottom:8px;">Aparece como "curtiu" ou "reagiu" na
+            publicação</div>
+          <div style="font-size:12px;"><strong style="color:var(--orange);">→ Enviar convite de conexão + Script G
+              depois</strong></div>
+        </div>
+        <div class="card" style="border-left:3px solid #1565C0;">
+          <div style="display:flex;justify-content:space-between;margin-bottom:8px;"><strong>COMENTOU OU
+              COMPARTILHOU</strong><span class="badge badge-blue">PERFIL 1</span></div>
+          <div style="font-size:11px;color:var(--text-light);margin-bottom:8px;">Engajamento maior = prioridade.
+            Enviar
+            conexão primeiro.</div>
+          <div style="font-size:12px;"><strong style="color:var(--orange);">→ Prioridade máxima. Conectar + Script G
+              imediatamente</strong></div>
+        </div>
+        <div class="card" style="border-left:3px solid var(--red);">
+          <div style="display:flex;justify-content:space-between;margin-bottom:8px;"><strong>PEDIU CONEXÃO PARA
+              NÓS</strong><span class="badge badge-red">PERFIL 2</span></div>
+          <div style="font-size:11px;color:var(--text-light);margin-bottom:8px;">Alguém nos encontrou e adicionou. Tem
+            intenção.</div>
+          <div style="font-size:12px;"><strong style="color:var(--orange);">→ Aceitar e usar Script C. Responder em
+              até
+              24h.</strong></div>
+        </div>
+        <div class="card" style="border-left:3px solid var(--red);">
+          <div style="display:flex;justify-content:space-between;margin-bottom:8px;"><strong>NÓS PEDIMOS CONEXÃO
+              (pós-ativa)</strong><span class="badge badge-red">PERFIL 2</span></div>
+          <div style="font-size:11px;color:var(--text-light);margin-bottom:8px;">Enviamos convite e ele aceitou →
+            Conexão Pós-Ativa</div>
+          <div style="font-size:12px;"><strong style="color:var(--orange);">→ Script A imediatamente (não esperar ele
+              falar)</strong></div>
+        </div>
+        <div class="card" style="border-left:3px solid var(--red);">
+          <div style="display:flex;justify-content:space-between;margin-bottom:8px;"><strong>RESPONDEU COM
+              INTERESSE</strong><span class="badge badge-red">PERFIL 2</span></div>
+          <div style="font-size:11px;color:var(--text-light);margin-bottom:8px;">Pediu produto, preço ou mais
+            informações</div>
+          <div style="font-size:12px;"><strong style="color:var(--orange);">→ Script D. Fazer 3 perguntas ANTES de
+              qualquer PDF.</strong></div>
+        </div>
+        <div class="card" style="border-left:3px solid #888;">
+          <div style="display:flex;justify-content:space-between;margin-bottom:8px;"><strong>NÃO RESPONDEU (7+
+              dias)</strong><span class="badge badge-gray">QUALQUER</span></div>
+          <div style="font-size:11px;color:var(--text-light);margin-bottom:8px;">Silêncio após primeiro contato</div>
+          <div style="font-size:12px;"><strong style="color:var(--orange);">→ Script F — 1 follow-up. Se não
+              responder:
+              FRIO.</strong></div>
+        </div>
+        <div class="card" style="border-left:3px solid #1565C0;">
+          <div style="display:flex;justify-content:space-between;margin-bottom:8px;"><strong>RESPONDEU MAS NÃO
+              COMPRA</strong><span class="badge badge-blue">PERFIL 1</span></div>
+          <div style="font-size:11px;color:var(--text-light);margin-bottom:8px;">O produto não serve para ele
+            diretamente</div>
+          <div style="font-size:12px;"><strong style="color:var(--orange);">→ Script G — Pitch Finder antes de
+              encerrar</strong></div>
+        </div>
+        <div class="card" style="border-left:3px solid var(--green);">
+          <div style="display:flex;justify-content:space-between;margin-bottom:8px;"><strong>QUALIFICADO
+              ✅</strong><span class="badge badge-green">PERFIL 2</span></div>
+          <div style="font-size:11px;color:var(--text-light);margin-bottom:8px;">Confirmou commodity + volume + porto
+            de
+            destino</div>
+          <div style="font-size:12px;"><strong style="color:var(--orange);">→ Script E — Migrar para WhatsApp + NCDA
+              automático</strong></div>
+        </div>
+      </div>
+
+      <div class="page-title" style="font-size:17px;margin-bottom:16px;">Funil Completo — Do LinkedIn ao Contrato
+      </div>
+      <div style="margin-bottom:24px;">
+        <div class="funnel-step">
+          <div class="funnel-num" style="background:#1565C0;border-radius:8px 8px 0 0;min-height:52px;">01</div>
+          <div class="funnel-body" style="border-radius:0 8px 8px 0;margin-bottom:0;border-bottom:0;"><span
+              style="font-weight:700;">LinkedIn — Identificar e Qualificar</span><span
+              style="font-size:11px;color:var(--text-light);">Máximo 2-3 mensagens. Usar scripts.</span></div>
+        </div>
+        <div class="funnel-step">
+          <div class="funnel-num" style="background:#1565C0;min-height:52px;">02</div>
+          <div class="funnel-body" style="border-top:0;border-bottom:0;"><span style="font-weight:700;">Propor
+              WhatsApp</span><span style="font-size:11px;color:var(--text-light);">Script E — "Could you share your
+              number?"</span></div>
+        </div>
+        <div class="funnel-step">
+          <div class="funnel-num" style="background:var(--orange);min-height:52px;">03</div>
+          <div class="funnel-body" style="border-top:0;border-bottom:0;background:var(--orange-light);"><span
+              style="font-weight:700;">Criar Grupo WhatsApp</span><span
+              style="font-size:11px;color:var(--text-light);">"Samba x [Nome]" — Leonardo + Marcelo + Nívio</span>
+          </div>
+        </div>
+        <div class="funnel-step">
+          <div class="funnel-num" style="background:var(--orange);min-height:52px;">04</div>
+          <div class="funnel-body" style="border-top:0;border-bottom:0;background:var(--orange-light);"><span
+              style="font-weight:700;">NCDA via ZapSign (automático)</span><span
+              style="font-size:11px;color:var(--text-light);">Contrato enviado automaticamente. Lead assina pelo
+              celular.</span></div>
+        </div>
+        <div class="funnel-step">
+          <div class="funnel-num" style="background:var(--green);min-height:52px;">05</div>
+          <div class="funnel-body" style="border-top:0;border-bottom:0;background:var(--green-light);"><span
+              style="font-weight:700;">NCDA Assinado ✅</span><span
+              style="font-size:11px;color:var(--text-light);">Sócios assumem. FCO → SPA → Instrumento
+              financeiro.</span>
+          </div>
+        </div>
+        <div class="funnel-step">
+          <div class="funnel-num" style="background:var(--green);min-height:52px;">06</div>
+          <div class="funnel-body" style="border-top:0;border-bottom:0;background:var(--green-light);"><span
+              style="font-weight:700;">Negociação e Fechamento</span><span
+              style="font-size:11px;color:var(--text-light);">Leonardo + Nívio + Marcelo cuidam de tudo aqui.</span>
+          </div>
+        </div>
+        <div class="funnel-step">
+          <div class="funnel-num" style="background:var(--green);border-radius:0 0 8px 8px;min-height:52px;">07</div>
+          <div class="funnel-body" style="border-top:0;border-radius:0 0 8px 0;background:var(--green-light);"><span
+              style="font-weight:700;">Comissão / Receita 💰</span><span
+              style="font-size:11px;color:var(--text-light);">Negócio fechado. Samba executa. Finder recebe.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- ABA 3: FILTRO COMPRADOR -->
+    <!-- ============================================================ -->
+    <div id="filtro" class="section">
+      <div class="page-title">🔍 Filtro do <span>Comprador</span></div>
+      <div class="page-sub">10 perguntas que você precisa responder ANTES de qualquer proposta. Não é obrigatório
+        perguntar todas de uma vez — algumas você descobre pelo perfil LinkedIn do lead.</div>
+
+      <div class="grid2">
+        <div>
+          <p style="font-size:12px;color:var(--text-light);margin-bottom:16px;">Use este formulário para registrar o
+            que
+            você já sabe sobre o lead. Após preencher, clique em <strong>Avaliar</strong>.</p>
+          <div class="filter-q">
+            <div style="display:flex;gap:10px;margin-bottom:4px;"><span class="badge badge-orange">01</span><strong>Qual
+                é o nome da empresa e o site?</strong></div>
+            <div style="font-size:11px;color:var(--text-light);">📌 Precisamos verificar se a empresa é real e qual é
+              o
+              porte dela.</div><input type="text" placeholder="Nome da empresa e URL...">
+          </div>
+          <div class="filter-q">
+            <div style="display:flex;gap:10px;margin-bottom:4px;"><span class="badge badge-orange">02</span><strong>A
+                empresa já importa atualmente?</strong></div>
+            <div style="font-size:11px;color:var(--text-light);">📌 Quem já importa tem processo e banco. Quem nunca
+              importou tem mais risco.</div><input type="text" placeholder="Sim / Não — quais produtos?">
+          </div>
+          <div class="filter-q">
+            <div style="display:flex;gap:10px;margin-bottom:4px;"><span class="badge badge-orange">03</span><strong>Para
+                onde vai a carga? (país + porto)</strong></div>
+            <div style="font-size:11px;color:var(--text-light);">📌 Define tudo: certificações, documentação, preço e
+              logística.</div><input type="text" placeholder="Ex: Índia, porto de Mumbai">
+          </div>
+          <div class="filter-q">
+            <div style="display:flex;gap:10px;margin-bottom:4px;"><span class="badge badge-orange">04</span><strong>O
+                lead é comprador final ou intermediário?</strong></div>
+            <div style="font-size:11px;color:var(--text-light);">📌 Comprador final fecha direto. Intermediário
+              (mandatário) representa outra empresa.</div><input type="text"
+              placeholder="Comprador final / Mandatário / Broker">
+          </div>
+          <div class="filter-q">
+            <div style="display:flex;gap:10px;margin-bottom:4px;"><span class="badge badge-orange">05</span><strong>Qual
+                commodity e especificação?</strong></div>
+            <div style="font-size:11px;color:var(--text-light);">📌 Soja GMO ou Non-GMO? Açúcar ICUMSA 45 ou 150? Os
+              detalhes mudam o preço.</div><input type="text" placeholder="Ex: Açúcar ICUMSA 45, soja GMO...">
+          </div>
+          <div class="filter-q">
+            <div style="display:flex;gap:10px;margin-bottom:4px;"><span class="badge badge-orange">06</span><strong>Qual
+                volume? (toneladas ou sacas)</strong></div>
+            <div style="font-size:11px;color:var(--text-light);">📌 Abaixo de 1.000 MT = pedido de teste. Acima de
+              5.000
+              MT = contrato anual.</div><input type="text" placeholder="Ex: 5.000 MT/mês">
+          </div>
+          <div class="filter-q">
+            <div style="display:flex;gap:10px;margin-bottom:4px;"><span
+                class="badge badge-orange">07</span><strong>Condição: CIF ou FOB?</strong></div>
+            <div style="font-size:11px;color:var(--text-light);">📌 CIF = Samba paga o frete. FOB = o comprador paga o
+              frete.</div><input type="text" placeholder="CIF / FOB / outros">
+          </div>
+          <div class="filter-q">
+            <div style="display:flex;gap:10px;margin-bottom:4px;"><span class="badge badge-orange">08</span><strong>Como
+                ele vai pagar? (instrumento financeiro)</strong></div>
+            <div style="font-size:11px;color:var(--text-light);">📌 DLC MT700 ou SBLC MT760 = pagamento bancário
+              garantido. Sem isso = sem negócio.</div><input type="text" placeholder="DLC / SBLC / TT 30+70...">
+          </div>
+          <div class="filter-q">
+            <div style="display:flex;gap:10px;margin-bottom:4px;"><span class="badge badge-orange">09</span><strong>Qual
+                prazo de entrega esperado?</strong></div>
+            <div style="font-size:11px;color:var(--text-light);">📌 Alinha expectativa com o calendário de safra e
+              logística.</div><input type="text" placeholder="Ex: 30 dias, agosto 2026...">
+          </div>
+          <div class="filter-q">
+            <div style="display:flex;gap:10px;margin-bottom:4px;"><span class="badge badge-orange">10</span><strong>Tem
+                empresa verificável no LinkedIn/site?</strong></div>
+            <div style="font-size:11px;color:var(--text-light);">📌 Empresa sem presença digital = sinal de alerta.
+              Checar antes de avançar.</div><input type="text"
+              placeholder="Sim / Não — link do site ou LinkedIn da empresa">
+          </div>
+
+          <button onclick="avaliar()" class="btn btn-orange" style="width:100%;margin-top:12px;padding:12px;">✅
+            AVALIAR
+            QUALIFICAÇÃO</button>
+          <div id="score-result" style="display:none;margin-top:12px;" class="card"></div>
+        </div>
+
+        <div>
+          <div class="card card-red" style="margin-bottom:16px;">
+            <div class="card-title red">⛔ Sinais de Alerta — Leads Problemáticos</div>
+            <div class="flow">
+              <div style="padding:10px;background:#fff;border-radius:8px;border:1px solid #EF9A9A;margin-bottom:8px;">
+                <span class="badge badge-red" style="margin-bottom:6px;display:inline-block;">ALTO
+                  RISCO</span><br><strong>Diz ter "mandato de governo"</strong> sem apresentar documento<br><span
+                  style="font-size:11px;color:var(--text-light);">→ Pedir carta de mandato ANTES de qualquer
+                  avanço</span>
+              </div>
+              <div style="padding:10px;background:#fff;border-radius:8px;border:1px solid #EF9A9A;margin-bottom:8px;">
+                <span class="badge badge-red" style="margin-bottom:6px;display:inline-block;">ALTO
+                  RISCO</span><br><strong>Quer fechar sem NCDA</strong> ou sem instrumento financeiro<br><span
+                  style="font-size:11px;color:var(--text-light);">→ Regra absoluta: sem NCDA assinado, sem
+                  negociação</span>
+              </div>
+              <div style="padding:10px;background:#fff;border-radius:8px;border:1px solid #EF9A9A;margin-bottom:8px;">
+                <span class="badge badge-red" style="margin-bottom:6px;display:inline-block;">ALTO
+                  RISCO</span><br><strong>Empresa sem site, sem CNPJ/registro verificável</strong><br><span
+                  style="font-size:11px;color:var(--text-light);">→ Não avançar. Due diligence primeiro. Passar para
+                  Nívio ou Marcelo.</span>
+              </div>
+              <div style="padding:10px;background:#fff;border-radius:8px;border:1px solid #FFB74D;margin-bottom:8px;">
+                <span class="badge badge-orange" style="margin-bottom:6px;display:inline-block;">MÉDIO
+                  RISCO</span><br><strong>Pede preço sem informar volume, porto ou condição</strong><br><span
+                  style="font-size:11px;color:var(--text-light);">→ Usar Script D. Pedir 3 informações antes de
+                  qualquer
+                  oferta.</span>
+              </div>
+              <div style="padding:10px;background:#fff;border-radius:8px;border:1px solid #FFB74D;"><span
+                  class="badge badge-orange" style="margin-bottom:6px;display:inline-block;">MÉDIO
+                  RISCO</span><br><strong>Responde só "interested" sem detalhar</strong><br><span
+                  style="font-size:11px;color:var(--text-light);">→ Continuar qualificando com Script D. Não assumir
+                  interesse real.</span></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title">Finder vs. Comprador — A diferença em 30 segundos</div>
+            <table class="mini-table">
+              <tr>
+                <th>Finder (Engajador)</th>
+                <th>Comprador</th>
+              </tr>
+              <tr>
+                <td>Indica um contato</td>
+                <td>É o contato que compra</td>
+              </tr>
+              <tr>
+                <td>Não assina nada no negócio</td>
+                <td>Assina LOI e SPA</td>
+              </tr>
+              <tr>
+                <td>Não negocia preço</td>
+                <td>Recebe proposta e negocia</td>
+              </tr>
+              <tr>
+                <td>Recebe comissão (10-30%)</td>
+                <td>Paga pela carga</td>
+              </tr>
+              <tr>
+                <td>Permanece sigiloso</td>
+                <td>Entra no contrato principal</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- ABA 4: SCRIPTS -->
+    <!-- ============================================================ -->
+    <div id="scripts" class="section">
+      <div class="page-title">💬 <span>Scripts</span> — Inglês e Português</div>
+      <div class="page-sub">Todos os textos prontos. Clique para abrir. Copiar e colar — nunca improvisar. O português
+        é
+        só para você entender o que está enviando.</div>
+
+      <div class="card card-blue" style="margin-bottom:16px;">
+        <div class="card-title blue">PERFIL 1 — ENGAJADOR / POTENCIAL FINDER</div>
+      </div>
+
+      <div id="sc_g" class="script-container">
+        <div class="script-header" onclick="toggleScript('sc_g')">
+          <div style="display:flex;align-items:center;gap:10px;"><span class="badge badge-orange">Script
+              G</span><strong>Pitch Finder — Para quem curtiu, comentou ou compartilhou</strong></div><span
+            style="color:var(--orange);font-size:16px;">▼</span>
+        </div>
+        <div class="script-body">
+          <div class="note"><strong>Quando usar:</strong> Pessoa que interagiu com algum post. NÃO é comprador. Pode
+            conhecer um comprador.</div>
+          <div class="grid2">
+            <div class="script-lang script-lang-en">
+              <div class="lang-tag tag-en">🇺🇸 INGLÊS — ENVIAR ASSIM</div>
+              <div class="script-text">Hi [Nome]! I noticed you engaged with our content — thank you for that.
+                We run a formal Finder Program: if you know serious active buyers in commodities, we pay 10–30%
+                commission on closed deals, for up to 36 months.
+                Zero investment. Zero conflict of interest. Fully backed by legal contract.
+                Would this be of interest to you?</div>
+            </div>
+            <div class="script-lang script-lang-pt">
+              <div class="lang-tag tag-pt">🇧🇷 PORTUGUÊS — SÓ PARA ENTENDER</div>
+              <div class="script-text">Olá [Nome]! Vi que você interagiu com nosso conteúdo — obrigado por isso.
+                Temos um Programa de Finders formal: se você conhece compradores sérios ativos em commodities, pagamos
+                comissão de 10% a 30% em negócios fechados, por até 36 meses.
+                Zero investimento. Zero conflito de interesses. Tudo formalizado em contrato.
+                Isso seria de seu interesse?</div>
+            </div>
+          </div>
+          <div class="tip"><strong>💡 Dica:</strong> Nunca fale de produto para o Engajador. Ele não é o comprador.
+            Ele
+            pode INDICAR um comprador para nós. Essa é a diferença.</div>
+        </div>
+      </div>
+
+      <div id="sc_h" class="script-container" style="margin-top:6px;">
+        <div class="script-header" onclick="toggleScript('sc_h')">
+          <div style="display:flex;align-items:center;gap:10px;"><span class="badge badge-orange">Script
+              H</span><strong>Arsenio Longo — Retomada (respondeu e não recebeu retorno)</strong></div><span
+            style="color:var(--orange);font-size:16px;">▼</span>
+        </div>
+        <div class="script-body">
+          <div class="warn"><strong>Erro cometido:</strong> Arsenio respondeu positivamente e a equipe não respondeu.
+            Esse script é para retomar.</div>
+          <div class="grid2">
+            <div class="script-lang script-lang-en">
+              <div class="lang-tag tag-en">🇺🇸 INGLÊS</div>
+              <div class="script-text">Hi Arsenio! Apologies for the delayed follow-up.
+                I wanted to reconnect — your background in maritime analytics is exactly the kind of network that fits
+                our Finder Program well.
+                If you know operators, importers or commodity buyers through your work, we pay formal commissions on
+                any
+                deal that closes.
+                Worth a conversation?</div>
+            </div>
+            <div class="script-lang script-lang-pt">
+              <div class="lang-tag tag-pt">🇧🇷 PORTUGUÊS</div>
+              <div class="script-text">Olá Arsenio! Peço desculpas pela demora na resposta.
+                Queria retomar o contato — sua atuação em analytics marítimo é exatamente o tipo de rede que se
+                encaixa
+                bem no nosso Programa de Finders.
+                Se você conhece operadores, importadores ou compradores de commodities pelo seu trabalho, pagamos
+                comissões formais em qualquer negócio fechado.
+                Vale uma conversa?</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card card-red" style="margin-top:24px;margin-bottom:16px;">
+        <div class="card-title red">PERFIL 2 — COMPRADOR / MANDATÁRIO</div>
+      </div>
+
+      <div id="sc_a" class="script-container">
+        <div class="script-header" onclick="toggleScript('sc_a')">
+          <div style="display:flex;align-items:center;gap:10px;"><span class="badge badge-orange">Script
+              A</span><strong>Pós-Conexão Ativa — Nós pedimos, ele aceitou</strong></div><span
+            style="color:var(--orange);font-size:16px;">▼</span>
+        </div>
+        <div class="script-body">
+          <div class="note"><strong>Quando usar:</strong> Você enviou o pedido de conexão, ele aceitou. Enviar em até
+            24h. Não esperar ele falar primeiro.</div>
+          <div class="grid2">
+            <div class="script-lang script-lang-en">
+              <div class="lang-tag tag-en">🇺🇸 INGLÊS — ENVIAR ASSIM</div>
+              <div class="script-text">Hi [Nome]! Thank you for connecting.
+                We operate as originators and exporters of Brazilian commodities on a large scale, with structured
+                execution from origin to shipment.
+                I'm seeking relationships with direct buyers and mandates who have active import demand.
+                If this is of interest to you, I'd be glad to have a quick conversation.</div>
+            </div>
+            <div class="script-lang script-lang-pt">
+              <div class="lang-tag tag-pt">🇧🇷 PORTUGUÊS — SÓ PARA ENTENDER</div>
+              <div class="script-text">Olá [Nome]! Obrigado por aceitar a conexão.
+                Somos originadores e exportadores de commodities brasileiras em larga escala, com execução estruturada
+                da origem até o embarque.
+                Busco relações com compradores diretos e mandatários que tenham demanda ativa de importação.
+                Se isso for de seu interesse, fico à disposição para uma conversa rápida.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="sc_b" class="script-container" style="margin-top:6px;">
+        <div class="script-header" onclick="toggleScript('sc_b')">
+          <div style="display:flex;align-items:center;gap:10px;"><span class="badge badge-orange">Script
+              B</span><strong>Lead conecta e fala primeiro</strong></div><span
+            style="color:var(--orange);font-size:16px;">▼</span>
+        </div>
+        <div class="script-body">
+          <div class="note"><strong>Quando usar:</strong> O lead aceitou e mandou uma mensagem, OU ele nos adicionou e
+            falou primeiro.</div>
+          <div class="grid2">
+            <div class="script-lang script-lang-en">
+              <div class="lang-tag tag-en">🇺🇸 INGLÊS</div>
+              <div class="script-text">Hi [Nome]! Great to connect.
+                We are Brazilian commodity originators and exporters — large scale, full compliance, competitive CIF
+                worldwide.
+                Are you a buyer or do you represent import demand for any specific commodity?</div>
+            </div>
+            <div class="script-lang script-lang-pt">
+              <div class="lang-tag tag-pt">🇧🇷 PORTUGUÊS</div>
+              <div class="script-text">Olá [Nome]! Ótimo conectar.
+                Somos originadores e exportadores brasileiros de commodities — larga escala, compliance completo,
+                preços
+                CIF competitivos para todo o mundo.
+                Você é comprador direto ou representa demanda de importação para alguma commodity específica?</div>
+            </div>
+          </div>
+          <div class="tip"><strong>💡 Dica:</strong> Sempre terminar com uma pergunta direta. O objetivo é identificar
+            se é comprador ou intermediário.</div>
+        </div>
+      </div>
+
+      <div id="sc_d" class="script-container" style="margin-top:6px;">
+        <div class="script-header" onclick="toggleScript('sc_d')">
+          <div style="display:flex;align-items:center;gap:10px;"><span class="badge badge-orange">Script
+              D</span><strong>Lead demonstra interesse em produto — 3 perguntas OBRIGATÓRIAS</strong></div><span
+            style="color:var(--orange);font-size:16px;">▼</span>
+        </div>
+        <div class="script-body">
+          <div class="warn"><strong>⛔ NUNCA pule este script.</strong> Este é o mais importante. Antes de qualquer
+            PDF,
+            preço ou proposta — faça essas 3 perguntas. Esse foi o erro com Tejinder Singh (7 PDFs sem qualificação).
+          </div>
+          <div class="grid2">
+            <div class="script-lang script-lang-en">
+              <div class="lang-tag tag-en">🇺🇸 INGLÊS — ENVIAR ASSIM</div>
+              <div class="script-text">Perfect — we have active supply for [COMMODITY].
+                To prepare an indicative offer, I need just 3 quick details:
+                1. Approximate volume? (MT or bags)
+                2. Destination port?
+                3. Preferred terms — CIF or FOB?
+                Would it be easier to continue on WhatsApp?</div>
+            </div>
+            <div class="script-lang script-lang-pt">
+              <div class="lang-tag tag-pt">🇧🇷 PORTUGUÊS</div>
+              <div class="script-text">Perfeito — temos abastecimento ativo de [COMMODITY].
+                Para preparar uma oferta indicativa, preciso de apenas 3 informações rápidas:
+                1. Volume aproximado? (MT ou sacas)
+                2. Porto de destino?
+                3. Condição preferida — CIF ou FOB?
+                Seria mais prático continuar pelo WhatsApp?</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="sc_e" class="script-container" style="margin-top:6px;">
+        <div class="script-header" onclick="toggleScript('sc_e')">
+          <div style="display:flex;align-items:center;gap:10px;"><span class="badge badge-orange">Script
+              E</span><strong>Migração para WhatsApp — Qualificado</strong></div><span
+            style="color:var(--orange);font-size:16px;">▼</span>
+        </div>
+        <div class="script-body">
+          <div class="note"><strong>Quando usar:</strong> Lead confirmou interesse real. Respondeu às 3 perguntas do
+            Script D.</div>
+          <div class="grid2">
+            <div class="script-lang script-lang-en">
+              <div class="lang-tag tag-en">🇺🇸 INGLÊS</div>
+              <div class="script-text">Great — let's move this forward on WhatsApp for faster communication.
+                Could you share your number? I'll add you to our commercial group with our team.</div>
+            </div>
+            <div class="script-lang script-lang-pt">
+              <div class="lang-tag tag-pt">🇧🇷 PORTUGUÊS</div>
+              <div class="script-text">Ótimo — vamos acelerar no WhatsApp para comunicação mais rápida.
+                Pode compartilhar seu número? Vou te adicionar ao nosso grupo comercial com nossa equipe.</div>
+            </div>
+          </div>
+          <div class="tip"><strong>💡 Grupo WhatsApp:</strong> Criar como "Samba x [Nome do Lead]". Incluir Leonardo +
+            Marcelo + Nívio. NCDA enviado automaticamente pelo sistema ZapSign.</div>
+        </div>
+      </div>
+
+      <div id="sc_f" class="script-container" style="margin-top:6px;">
+        <div class="script-header" onclick="toggleScript('sc_f')">
+          <div style="display:flex;align-items:center;gap:10px;"><span class="badge badge-orange">Script
+              F</span><strong>Follow-up — Lead sumiu por 7+ dias</strong></div><span
+            style="color:var(--orange);font-size:16px;">▼</span>
+        </div>
+        <div class="script-body">
+          <div class="grid2">
+            <div class="script-lang script-lang-en">
+              <div class="lang-tag tag-en">🇺🇸 INGLÊS</div>
+              <div class="script-text">Hi [Nome] — just following up on our last conversation.
+                We still have active supply available. If the timing is right, happy to pick up where we left off.
+              </div>
+            </div>
+            <div class="script-lang script-lang-pt">
+              <div class="lang-tag tag-pt">🇧🇷 PORTUGUÊS</div>
+              <div class="script-text">Olá [Nome] — retomando nossa conversa anterior.
+                Ainda temos abastecimento ativo disponível. Se o momento for oportuno, podemos continuar de onde
+                paramos.</div>
+            </div>
+          </div>
+          <div class="warn"><strong>⛔ Apenas UM follow-up.</strong> Se não responder, status no CRM: "Frio —
+            aguardar".
+            Não insistir mais.</div>
+        </div>
+      </div>
+
+      <div id="sc_j" class="script-container" style="margin-top:6px;">
+        <div class="script-header" onclick="toggleScript('sc_j')">
+          <div style="display:flex;align-items:center;gap:10px;"><span class="badge badge-orange">Script
+              J</span><strong>Tejinder Singh — Retomada (erro cometido)</strong></div><span
+            style="color:var(--orange);font-size:16px;">▼</span>
+        </div>
+        <div class="script-body">
+          <div class="warn"><strong>Contexto:</strong> Tejinder pediu CDSO 30.000 MT CIF Mundra (Índia). Equipe mandou
+            7
+            PDFs sem qualificar. Conversa morreu. Este script retoma de forma direta.</div>
+          <div class="grid2">
+            <div class="script-lang script-lang-en">
+              <div class="lang-tag tag-en">🇺🇸 INGLÊS</div>
+              <div class="script-text">Hi Tejinder — checking back in.
+                Apologies for overloading you earlier — I should have asked first.
+                Is the demand for CDSO 30,000 MT CIF Mundra/Chennai still active?
+                If so, I can have an indicative price ready within 24 hours.</div>
+            </div>
+            <div class="script-lang script-lang-pt">
+              <div class="lang-tag tag-pt">🇧🇷 PORTUGUÊS</div>
+              <div class="script-text">Olá Tejinder — retomando contato.
+                Peço desculpas pelo excesso de materiais antes — deveria ter perguntado primeiro.
+                A demanda de CDSO 30.000 MT CIF Mundra/Chennai ainda está ativa?
+                Se sim, consigo ter um preço indicativo em até 24 horas.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- ABA 5: EXEMPLOS PRÁTICOS -->
+    <!-- ============================================================ -->
+    <div id="exemplos" class="section">
+      <div class="page-title">📦 Exemplos <span>Práticos</span></div>
+      <div class="page-sub">Como um comprador real escreve, o que ele quer dizer e como responder corretamente. Clique
+        para abrir cada exemplo.</div>
+
+      <div class="ex-wrap">
+        <div class="ex-header" onclick="toggleEx('sugar')">🇧🇷 Açúcar ICUMSA 45 — Arábia Saudita <span>▼</span></div>
+        <div id="sugar" class="ex-body">
+          <div class="grid2" style="margin-bottom:20px;">
+            <div>
+              <div style="font-weight:700;color:var(--red);font-size:12px;margin-bottom:8px;">📩 O que o lead escreveu
+                (em inglês)</div>
+              <div
+                style="background:#f5f5f5;border-radius:8px;padding:12px;font-size:12px;font-family:monospace;color:var(--text);border:1px solid var(--border);">
+                We are looking for Sugar ICUMSA 45, 10,000 MT monthly, CIF Jeddah Saudi Arabia. Please send your best
+                offer with full specs.</div>
+              <div style="font-weight:700;color:var(--blue);font-size:12px;margin:12px 0 8px;">📩 Tradução — o que ele
+                quer</div>
+              <div
+                style="background:var(--blue-light);border-radius:8px;padding:12px;font-size:12px;border:1px solid #90CAF9;">
+                Procuramos Açúcar ICUMSA 45, 10.000 toneladas por mês, com entrega CIF no porto de Jeddah, Arábia
+                Saudita. Por favor enviar a melhor oferta com especificações completas.</div>
+            </div>
+            <div>
+              <div style="font-weight:700;color:var(--green);font-size:12px;margin-bottom:8px;">📋 Especificações do
+                produto</div>
+              <div
+                style="background:var(--green-light);border-radius:8px;padding:12px;font-size:12px;border:1px solid #A5D6A7;line-height:1.8;">
+                Polarização ≥ 99,80°Z<br>Umidade ≤ 0,04%<br>ICUMSA ≤ 45 UI<br>Sulfatos ≤ 2ppm<br>Origem: Brasil
+                (Bonsucro/Halal certificado)</div>
+              <div class="warn" style="margin-top:12px;"><strong>⚠️ Filtro antes de responder:</strong> Confirmar se é
+                comprador final ou mandatário. Perguntar instrumento de pagamento. Não mandar preço antes disso.</div>
+            </div>
+          </div>
+          <div class="grid2">
+            <div class="script-lang script-lang-en">
+              <div class="lang-tag tag-en">🇺🇸 RESPOSTA — ENVIAR ASSIM</div>
+              <div class="script-text">Thank you for reaching out.
+                We supply Sugar ICUMSA 45 from certified Brazilian mills — Bonsucro / Halal certified, available CIF
+                ASWP.
+
+                Before preparing your indicative price, quick confirm:
+                - Are you the end buyer or a mandatary?
+                - Payment instrument: DLC MT700 or SBLC MT760?
+                - Monthly contract (12 months) or spot trial first?
+
+                Once confirmed, FCO ready within 24 hours.</div>
+            </div>
+            <div class="script-lang script-lang-pt">
+              <div class="lang-tag tag-pt">🇧🇷 TRADUÇÃO — SÓ PARA ENTENDER</div>
+              <div class="script-text">Obrigado pelo contato.
+                Fornecemos Açúcar ICUMSA 45 de usinas brasileiras certificadas — Bonsucro / Halal certificado,
+                disponível CIF ASWP.
+
+                Antes de preparar o preço indicativo, confirmar rapidamente:
+                - Você é comprador final ou mandatário?
+                - Instrumento de pagamento: DLC MT700 ou SBLC MT760?
+                - Contrato mensal (12 meses) ou primeiro pedido teste?
+
+                Confirmado, FCO pronto em até 24 horas.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ex-wrap">
+        <div class="ex-header" onclick="toggleEx('feijao')">🇧🇷 Feijão Preto — Portugal / Europa <span>▼</span></div>
+        <div id="feijao" class="ex-body">
+          <div class="grid2" style="margin-bottom:20px;">
+            <div>
+              <div style="font-weight:700;color:var(--red);font-size:12px;margin-bottom:8px;">📩 O que o lead escreveu
+              </div>
+              <div
+                style="background:#f5f5f5;border-radius:8px;padding:12px;font-size:12px;font-family:monospace;border:1px solid var(--border);">
+                Hello, we need black beans 500 MT for Brazil to Portugal, FOB Santos. Can you quote?</div>
+              <div style="font-weight:700;color:var(--blue);font-size:12px;margin:12px 0 8px;">📩 Tradução</div>
+              <div
+                style="background:var(--blue-light);border-radius:8px;padding:12px;font-size:12px;border:1px solid #90CAF9;">
+                Olá, precisamos de feijão preto 500 MT, Brasil para Portugal, FOB Santos. Pode cotar?</div>
+            </div>
+            <div>
+              <div style="font-weight:700;color:var(--green);font-size:12px;margin-bottom:8px;">📋 Especificações
+              </div>
+              <div
+                style="background:var(--green-light);border-radius:8px;padding:12px;font-size:12px;border:1px solid #A5D6A7;line-height:1.8;">
+                Umidade máx 14% · Impurezas máx 1%<br>Grãos quebrados máx 3% · Tipo 1 ou 3<br>DG SANTE registrado
+                (Europa)</div>
+              <div class="warn" style="margin-top:12px;"><strong>⚠️ Filtro:</strong> 500 MT = pedido de teste.
+                Verificar
+                se tem registro UE para importação de alimentos (DG SANTE). Pagamento: 30% adiantado + 70% antes do
+                embarque.</div>
+            </div>
+          </div>
+          <div class="grid2">
+            <div class="script-lang script-lang-en">
+              <div class="lang-tag tag-en">🇺🇸 RESPOSTA — ENVIAR ASSIM</div>
+              <div class="script-text">Hello — we supply Black Beans and Carioca Beans, certified for EU markets (DG
+                SANTE registered).
+
+                For your 500 MT trial, FOB Santos:
+                - Caliber 1 / type 3 available
+                - Free of Salmonella, Aflatoxins under 10ppb (SGS)
+                - Payment: 30% advance + 70% before BL
+
+                Can you confirm: Is the buyer EU-registered for food imports?
+                Indicative FOB offer within 24 hours.</div>
+            </div>
+            <div class="script-lang script-lang-pt">
+              <div class="lang-tag tag-pt">🇧🇷 TRADUÇÃO</div>
+              <div class="script-text">Olá — fornecemos Feijão Preto e Carioca, certificados para o mercado europeu
+                (DG
+                SANTE).
+
+                Para seu pedido teste de 500 MT, FOB Santos:
+                - Calibre 1 / tipo 3 disponível
+                - Livre de Salmonela, Aflatoxinas abaixo de 10ppb (SGS)
+                - Pagamento: 30% adiantado + 70% antes do embarque
+
+                Pode confirmar: o comprador tem registro UE para importação de alimentos?
+                Oferta indicativa FOB em 24 horas.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ex-wrap">
+        <div class="ex-header" onclick="toggleEx('arroz')">🇧🇷 Arroz Branco — Angola <span>▼</span></div>
+        <div id="arroz" class="ex-body">
+          <div class="grid2" style="margin-bottom:20px;">
+            <div>
+              <div style="font-weight:700;color:var(--red);font-size:12px;margin-bottom:8px;">📩 O que o lead escreveu
+              </div>
+              <div
+                style="background:#f5f5f5;border-radius:8px;padding:12px;font-size:12px;font-family:monospace;border:1px solid var(--border);">
+                Good day. We need White Rice 5% broken, 3,000 MT, CIF Luanda Angola. Urgent.</div>
+              <div style="font-weight:700;color:var(--blue);font-size:12px;margin:12px 0 8px;">📩 Tradução</div>
+              <div
+                style="background:var(--blue-light);border-radius:8px;padding:12px;font-size:12px;border:1px solid #90CAF9;">
+                Bom dia. Precisamos de Arroz Branco 5% quebrados, 3.000 MT, CIF Luanda Angola. Urgente.</div>
+            </div>
+            <div>
+              <div style="font-weight:700;color:var(--green);font-size:12px;margin-bottom:8px;">📋 Especificações
+              </div>
+              <div
+                style="background:var(--green-light);border-radius:8px;padding:12px;font-size:12px;border:1px solid #A5D6A7;line-height:1.8;">
+                Umidade máx 14% · Quebrados máx 5%<br>Grãos gessados máx 2% · Impurezas máx 0,5%<br>Certificação MAPA
+                (Brasil)</div>
+              <div class="warn" style="margin-top:12px;"><strong>⚠️ Filtro:</strong> Angola exige licença MIREX de
+                importação. "Urgente" não muda o processo — qualificar antes de acelerar. Confirmar instrumento de
+                pagamento.</div>
+            </div>
+          </div>
+          <div class="grid2">
+            <div class="script-lang script-lang-en">
+              <div class="lang-tag tag-en">🇺🇸 RESPOSTA</div>
+              <div class="script-text">Good day — we supply White Rice Long Grain, 5% broken, from certified Brazilian
+                mills.
+
+                For 3,000 MT CIF Luanda:
+                - Origin: Rio Grande do Sul / Mato Grosso
+                - Inspection: SGS at loading port
+                - Phytosanitary + MAPA certification included
+
+                Before the price:
+                1. Do you hold a valid MIREX import license?
+                2. Payment: DLC MT700 or 30%+70% TT?
+                3. Spot order or monthly contract?
+
+                Indicative price in 24 hours after confirmation.</div>
+            </div>
+            <div class="script-lang script-lang-pt">
+              <div class="lang-tag tag-pt">🇧🇷 TRADUÇÃO</div>
+              <div class="script-text">Bom dia — fornecemos Arroz Branco Longo Fino, 5% quebrados, de moinhos
+                certificados.
+
+                Para 3.000 MT CIF Luanda:
+                - Origem: Rio Grande do Sul / Mato Grosso
+                - Inspeção: SGS no porto de carregamento
+                - Fitossanitário + certificação MAPA incluídos
+
+                Antes do preço:
+                1. Possui licença MIREX de importação válida?
+                2. Pagamento: DLC MT700 ou 30%+70% TT?
+                3. Pedido spot ou contrato mensal?
+
+                Preço indicativo em 24 horas após confirmação.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="info" style="margin-top:16px;">
+        <strong>📌 Lembrete:</strong> Os preços reais sempre são confirmados por <strong>Nívio, Marcelo ou
+          Leonardo</strong>. Sua função é qualificar, filtrar e passar adiante — não precisa saber o preço.
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- ABA 6: FAQ VENDAS -->
+    <!-- ============================================================ -->
+    <div id="faq_vendas" class="section">
+      <div class="page-title">❓ FAQ — <span>Vendas & LinkedIn</span></div>
+      <div class="page-sub">Respostas para as dúvidas mais comuns de quem está começando nesse processo do zero.</div>
+
+      <div class="faq-cat">SOBRE O PROCESSO E O PAPEL DA EQUIPE</div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Eu preciso saber vender ou entender de commodities para usar o
+          LinkedIn?<span>▼</span></div>
+        <div class="faq-a">
+          <p>Não. Seu papel não é vender — é <strong>identificar quem é a pessoa e responder com o script
+              correto</strong>. Quem vende são Marcelo, Nívio e Leonardo. Você é o triador inicial. Pense em si mesmo
+            como a recepção de um hospital: você não opera o paciente, mas direciona para o médico certo.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">E se o lead fizer uma pergunta técnica que eu não sei
+          responder?<span>▼</span></div>
+        <div class="faq-a">
+          <p>Responda: <em>"Great question — let me check with my team and get back to you with accurate details.
+              Could
+              we continue on WhatsApp for a quicker response?"</em><br><br>Em português: Boa pergunta — vou verificar
+            com minha equipe e retorno com os detalhes corretos. Podemos continuar no WhatsApp para uma resposta mais
+            rápida?<br><br>Depois, avise Nívio, Marcelo ou Leonardo via WhatsApp com a pergunta do lead.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Posso improvisar os scripts ou adaptar as palavras?<span>▼</span>
+        </div>
+        <div class="faq-a">
+          <p><strong>Não improvise.</strong> Os scripts foram testados e escritos com linguagem específica do mercado
+            de
+            commodities internacionais. Uma palavra errada pode soar como amadorismo ou gerar um mal-entendido sério.
+            Copie e cole. Se precisar adaptar algo (ex: nome, commodity específica), só substitua o que está entre
+            colchetes [assim].</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Quanto tempo tenho para responder uma mensagem?<span>▼</span>
+        </div>
+        <div class="faq-a">
+          <p><strong>Máximo 24 horas.</strong> No mercado de commodities internacionais, leads compram de quem
+            responde
+            primeiro. Um importador que está comprando pode estar falando com 5 fornecedores ao mesmo tempo. Se você
+            demorar, ele fecha com outro.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Posso falar em português com os leads?<span>▼</span></div>
+        <div class="faq-a">
+          <p>Depende do lead. Se ele for brasileiro, pode usar português. Se for estrangeiro (qualquer outro país),
+            use
+            inglês. Os nossos compradores são principalmente da Índia, China, Oriente Médio, Europa e África — então a
+            grande maioria vai ser em inglês. Por isso os scripts estão em inglês: copie e cole direto.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">O que faço se o lead me mandar uma mensagem em outra língua
+          (árabe,
+          chinês, etc.)?<span>▼</span></div>
+        <div class="faq-a">
+          <p>Responda em inglês normalmente. A língua dos negócios internacionais é o inglês. Se ele escreveu em árabe
+            ou chinês, muito provavelmente também fala inglês no contexto de negócios. Você pode usar o Google
+            Translate
+            para entender o que ele escreveu, mas responda sempre em inglês usando os scripts.</p>
+        </div>
+      </div>
+
+      <div class="faq-cat">SOBRE O PROGRAMA FINDER</div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">O que exatamente é um Finder? Explica de forma bem
+          simples.<span>▼</span></div>
+        <div class="faq-a">
+          <p>Imagina que você tem um amigo que trabalha num banco que importa grãos. Você apresenta esse amigo para a
+            Samba Export. A Samba fecha o negócio com esse banco. Você recebeu uma comissão sem fazer nada além da
+            apresentação. Isso é um Finder.</p><br>
+          <p>O Finder <strong>não vende, não negocia, não assina nada</strong>. Ele só apresenta. A Samba faz todo o
+            resto.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Como o Finder recebe a comissão? Quanto?<span>▼</span></div>
+        <div class="faq-a">
+          <p>A comissão é de <strong>10% a 30% sobre a margem da operação</strong>, por até <strong>36 meses</strong>
+            em
+            negócios recorrentes. Isso significa que se o comprador voltar a comprar mês após mês, o Finder continua
+            recebendo por até 3 anos.<br><br>Exemplos reais:
+          <ul>
+            <li>Soja 50.000 ton → Finder recebe de R$26k a R$78k por indicação</li>
+            <li>Milho 30.000 ton → R$45k a R$180k</li>
+            <li>Açúcar 10.000 ton → R$10k a R$50k</li>
+          </ul>Tudo formalizado em contrato antes da apresentação.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Para quem devo fazer o pitch do Programa Finder?<span>▼</span>
+        </div>
+        <div class="faq-a">
+          <p>Para <strong>qualquer pessoa que não seja o comprador final</strong>: agrônomos, despachantes, corretores
+            de grãos, agentes de carga, advogados de comex, traders bancários. Qualquer profissional que tenha uma
+            rede
+            de relacionamentos com importadores pode ser um Finder. Se alguém interagiu com nosso conteúdo mas
+            claramente não é um comprador direto, apresente o Programa Finder.</p>
+        </div>
+      </div>
+
+      <div class="faq-cat">SOBRE O WHATSAPP E O NCDA</div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">O que é o NCDA e por que é tão importante?<span>▼</span></div>
+        <div class="faq-a">
+          <p>NCDA significa <strong>Non-Circumvention and Non-Disclosure Agreement</strong> — em português: Acordo de
+            Não Circunvenção e Confidencialidade. É basicamente um contrato que protege todo mundo:
+          <ul>
+            <li><strong>Protege o Finder:</strong> garante que ele vai receber a comissão mesmo que tentem "pular" ele
+            </li>
+            <li><strong>Protege a Samba:</strong> garante que o comprador não vai pegar os contatos e ir direto ao
+              fornecedor sem pagar a Samba</li>
+            <li><strong>Protege o comprador:</strong> garante confidencialidade dos dados da operação</li>
+          </ul>Sem NCDA assinado = nenhuma negociação avança. É regra não negociável.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Como o grupo WhatsApp funciona? O que eu faço depois de
+          criar?<span>▼</span></div>
+        <div class="faq-a">
+          <p>Processo:
+          <ol style="margin:8px 0 8px 20px;">
+            <li>Criar grupo: "Samba x [Nome do Lead]"</li>
+            <li>Adicionar: Leonardo + Marcelo + Nívio + você</li>
+            <li>O sistema (Make.com + ZapSign) envia o NCDA automaticamente para o lead assinar</li>
+            <li>Quando o lead assinar, avisar os sócios no grupo: "NCDA assinado ✅"</li>
+            <li>A partir daí os sócios assumem a negociação</li>
+          </ol>Sua função no grupo depois disso é acompanhar e registrar atualizações no CRM.</p>
+        </div>
+      </div>
+
+      <div class="faq-cat">SOBRE O CRM E REGISTRO</div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Por que preciso registrar tudo na planilha? Parece
+          burocracia...<span>▼</span></div>
+        <div class="faq-a">
+          <p>Porque um lead que não está registrado pode ser abordado por dois membros da equipe ao mesmo tempo,
+            causando confusão. Também porque leads "frios" de hoje podem virar compradores em 6 meses — e sem
+            registro,
+            a gente perde esse histórico. Além disso, os sócios precisam saber exatamente em que estágio cada negócio
+            está sem precisar perguntar toda hora.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- ABA 7: FAQ COMMODITIES -->
+    <!-- ============================================================ -->
+    <div id="faq_commo" class="section">
+      <div class="page-title">🌾 FAQ — <span>Commodities</span></div>
+      <div class="page-sub">O básico que você precisa saber para entender o que os compradores estão pedindo. Sem
+        tecnicismo desnecessário.</div>
+
+      <div class="faq-cat">O QUE É COMMODITY E O QUE A SAMBA VENDE</div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">O que é uma commodity? Explica como se eu tivesse 12
+          anos.<span>▼</span></div>
+        <div class="faq-a">
+          <p>Commodity é um produto que é igual em todo o lugar. Uma tonelada de soja brasileira e uma tonelada de
+            soja
+            argentina têm as mesmas características — são intercambiáveis. Por isso o preço é fixado no mercado
+            global.<br><br>Exemplos: soja, milho, açúcar, café, petróleo, ouro. Tudo que você vê na natureza e pode
+            medir em toneladas ou barris é basicamente uma commodity.<br><br>É diferente de um produto manufaturado
+            como
+            um celular ou um carro, onde a marca faz diferença.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Quais são os principais produtos que a Samba vende?<span>▼</span>
+        </div>
+        <div class="faq-a">
+          <p>Os mais comuns nos pedidos de compra:<br><br><strong>Agro (os mais pedidos):</strong>
+          <ul>
+            <li>Soja (grão inteiro GMO)</li>
+            <li>Farelo de Soja (46-48% de proteína)</li>
+            <li>Açúcar ICUMSA 45 (branco refinado), ICUMSA 150 (cristal) e VHP (1200) (bruto)</li>
+            <li>Milho Amarelo GMO</li>
+            <li>Óleos vegetais: CDSO (óleo de soja bruto), RBD (refinado), Girassol, Palma, Canola</li>
+            <li>Arroz branco, feijão preto, carioca</li>
+          </ul><strong>Proteínas:</strong> Frango (peito, coxa, carcaça), Carne Bovina, Suíno<br><strong>Brazil
+            Flavors:</strong> Café Arábica, Mel orgânico, Açaí, Cacau,
+          Castanhas<br><strong>Minerais/Industrial:</strong> Minério de Ferro, Lítio, Etanol</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">O que é ICUMSA? Qual a diferença entre 45, 150 e
+          VHP?<span>▼</span>
+        </div>
+        <div class="faq-a">
+          <p>ICUMSA é uma medida de <strong>cor e pureza do açúcar</strong>. Quanto menor o número, mais branco e
+            puro.<br><br>
+          <ul>
+            <li><strong>ICUMSA 45:</strong> Açúcar branco super refinado. O mais caro. Para consumo direto em países
+              do
+              Oriente Médio, Europa, Ásia.</li>
+            <li><strong>ICUMSA 150:</strong> Açúcar cristal (aquele granulado branco). Para indústria alimentícia.
+            </li>
+            <li><strong>VHP (Very High Polarization) — ICUMSA 1200:</strong> Açúcar bruto, amarelado. Para refinarias
+              que processam o açúcar no país de destino. Mais barato.</li>
+          </ul>Quando o lead pede "Sugar ICUMSA 45", ele quer o branco refinado premium.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">O que é CDSO? E RBD? Eles aparecem bastante nos
+          pedidos.<span>▼</span></div>
+        <div class="faq-a">
+          <p><strong>CDSO</strong> = Crude Degummed Soybean Oil = <strong>Óleo de Soja Bruto</strong>. É o óleo de
+            soja
+            antes de ser refinado. Mais barato, usado pela indústria para refinar ou fazer
+            biodiesel.<br><br><strong>RBD</strong> = Refined, Bleached and Deodorized = <strong>Óleo de Soja
+              Refinado</strong>. É o óleo que vai para consumo direto — o que você compra no supermercado. Mais
+            caro.<br><br>Tejinder Singh, por exemplo, pediu CDSO 30.000 MT — ou seja, óleo de soja bruto para a Índia.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">O que é GMO? Todos os compradores aceitam?<span>▼</span></div>
+        <div class="faq-a">
+          <p><strong>GMO</strong> = Genetically Modified Organism = <strong>Organismo Geneticamente
+              Modificado</strong>.
+            A maioria da soja e milho do Brasil é GMO. Isso é normal e aceito nos EUA, China, Oriente Médio e muitos
+            outros países.<br><br>Mas alguns países e compradores preferem <strong>Non-GMO</strong> (sem modificação
+            genética) — especialmente Europa (alguns produtos) e compradores de alimentos orgânicos.<br><br>Quando o
+            lead pedir, confirme se ele aceita GMO ou precisa de Non-GMO. Se não souber, é uma das perguntas do Script
+            D.</p>
+        </div>
+      </div>
+
+      <div class="faq-cat">LOGÍSTICA E TRANSPORTE</div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">CIF e FOB — o que significa cada um? Como explicar pro
+          lead?<span>▼</span></div>
+        <div class="faq-a">
+          <p><strong>Imagine que você está comprando uma geladeira:</strong><br><br><strong>FOB</strong> (Free On
+            Board): A loja coloca a geladeira no caminhão para você, mas <strong>você paga o frete</strong> da entrega
+            na sua casa. No nosso caso: a Samba coloca a mercadoria no navio (no porto de Santos/Paranaguá), e o
+            <strong>comprador paga o frete marítimo</strong>.<br><br><strong>CIF</strong> (Cost, Insurance and
+            Freight):
+            A loja <strong>entrega na sua porta</strong> e inclui frete e seguro no preço. No nosso caso: a Samba paga
+            o
+            frete e seguro e entrega no <strong>porto do comprador</strong> (ex: Mumbai, Jeddah, Luanda). O preço CIF
+            é
+            mais alto, mas o comprador não precisa se preocupar com mais nada.<br><br>A maioria dos compradores
+            prefere
+            CIF porque é mais simples.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">O que é MT? E saca? Quais as unidades mais usadas?<span>▼</span>
+        </div>
+        <div class="faq-a">
+          <p>
+          <ul>
+            <li><strong>MT</strong> = Metric Ton = <strong>Tonelada Métrica</strong> (1.000 kg). A unidade padrão para
+              a
+              maioria das commodities internacionais.</li>
+            <li><strong>Saca / Bag</strong> = 60 kg. Usado para café. "5.000 bags de café" = 300 toneladas.</li>
+            <li><strong>BBL</strong> = Barrel = Barril. Usado para petróleo e derivados (159 litros).</li>
+            <li><strong>MT/mês</strong> = toneladas por mês. Pedido recorrente.</li>
+          </ul>
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-cat">PAGAMENTO E DOCUMENTAÇÃO</div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">O que é DLC e SBLC? Por que é tão importante saber
+          isso?<span>▼</span></div>
+        <div class="faq-a">
+          <p>São formas de <strong>garantia de pagamento bancária</strong>. Imagine como um cheque caução emitido pelo
+            banco do comprador.<br><br><strong>DLC MT700</strong> (Documentary Letter of Credit) = <strong>Carta de
+              Crédito Documentária</strong>. O banco do comprador garante que vai pagar a Samba assim que os
+            documentos
+            de embarque forem apresentados. É o método mais usado em contratos anuais.<br><br><strong>SBLC
+              MT760</strong> (Standby Letter of Credit) = <strong>Carta de Crédito Standby</strong>. Funciona como
+            seguro: o banco paga se o comprador não cumprir o contrato.<br><br>Por que isso importa para você? Porque
+            quando você qualifica um lead, precisa perguntar qual instrumento ele tem disponível. Sem garantia
+            bancária,
+            a Samba não embarca.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">O que é SGS, BV, Intertek? Por que aparecem tanto?<span>▼</span>
+        </div>
+        <div class="faq-a">
+          <p>São empresas de <strong>inspeção e certificação independentes</strong>. Elas vão ao porto, pesam e testam
+            a
+            mercadoria antes de embarcar e emitem um certificado confirmando que a qualidade está conforme o
+            contrato.<br><br>
+          <ul>
+            <li><strong>SGS</strong> = Société Générale de Surveillance (Suíça — a maior do mundo)</li>
+            <li><strong>BV</strong> = Bureau Veritas (França)</li>
+            <li><strong>Intertek</strong> = empresa britânica</li>
+            <li><strong>CCIC</strong> = China Certification & Inspection Company (usada especialmente para China)</li>
+          </ul><br>Para o comprador, saber que o SGS ou BV inspecionou é uma garantia de qualidade. Para você na
+          prática: quando o lead perguntar sobre inspeção, a resposta padrão é "SGS, BV, Intertek ou similar — on-load
+          inspection".</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">O que é FCO? E SPA? E LOI? Por que existem tantos
+          documentos?<span>▼</span></div>
+        <div class="faq-a">
+          <p>Pense como um negócio imobiliário — tem várias etapas com documentos diferentes:<br><br>
+          <ul>
+            <li><strong>LOI</strong> (Letter of Intent) = <strong>Carta de Intenção</strong>. "Tenho interesse em
+              comprar, aqui estão minhas condições gerais." Não é vinculante, mas mostra seriedade.</li>
+            <li><strong>ICPO</strong> (Irrevocable Corporate Purchase Order) = <strong>Ordem de Compra Corporativa
+                Irrevogável</strong>. O comprador confirma formalmente o pedido.</li>
+            <li><strong>FCO</strong> (Full Corporate Offer) = <strong>Oferta Corporativa Completa</strong>. A Samba
+              responde com todos os detalhes: produto, specs, preço, condições, prazo.</li>
+            <li><strong>SPA</strong> (Sales and Purchase Agreement) = <strong>Contrato de Compra e Venda</strong>. O
+              contrato final, assinado pelas duas partes.</li>
+          </ul><br>Para você na prática: você nunca emite nenhum desses documentos. Você apenas qualifica o lead até o
+          ponto em que os sócios assumem e produzem esses documentos.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">O que é GACC, FDA e DG SANTE? Por que aparecem no
+          portfólio?<span>▼</span></div>
+        <div class="faq-a">
+          <p>São registros de autoridades regulatórias que permitem exportar para determinados países:<br><br>
+          <ul>
+            <li><strong>GACC</strong> = General Administration of Customs of China = <strong>Registro para exportar
+                para
+                a China</strong>. Sem GACC, a carga não entra na China.</li>
+            <li><strong>FDA</strong> = Food and Drug Administration = <strong>Registro para exportar para os
+                EUA</strong>.</li>
+            <li><strong>DG SANTE</strong> = Directorate-General for Health and Food Safety = <strong>Registro para
+                exportar para a União Europeia (27 países)</strong>.</li>
+          </ul><br>Por que isso importa? Se um lead da China perguntar se temos registro GACC, a resposta é "yes". Se
+          um
+          europeu perguntar sobre DG SANTE, a resposta é "yes". Isso dá segurança ao comprador que a Samba pode
+          efetivamente exportar para o país dele.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- ABA 8: GLOSSÁRIO -->
+    <!-- ============================================================ -->
+    <div id="glossario" class="section">
+      <div class="page-title">📖 <span>Glossário</span></div>
+      <div class="page-sub">Todas as siglas e termos que você vai encontrar nas mensagens dos leads. Em ordem
+        alfabética.</div>
+
+      <div class="card">
+        <div class="glossary-item">
+          <div class="glossary-term">ASWP</div>
+          <div class="glossary-def">Any Safe World Port — Qualquer porto seguro do mundo. Quando dizemos "CIF ASWP",
+            significa que entregamos em qualquer porto do mundo.</div>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">BL / B/L</div>
+          <div class="glossary-def">Bill of Lading — Conhecimento de Embarque. Documento que comprova que a mercadoria
+            foi carregada no navio. É como o recibo de entrega do embarque.</div>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">CDSO</div>
+          <div class="glossary-def">Crude Degummed Soybean Oil — Óleo de Soja Bruto. Antes de ser refinado. Usado por
+            indústrias e refinarias.</div>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">CIF</div>
+          <div class="glossary-def">Cost, Insurance and Freight — Custo, Seguro e Frete. O vendedor (Samba) paga tudo
+            até o porto do comprador.</div>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">DLC / LC</div>
+          <div class="glossary-def">Documentary Letter of Credit — Carta de Crédito Documentária. Garantia de
+            pagamento
+            emitida pelo banco do comprador. Padrão SWIFT MT700.</div>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">DG SANTE</div>
+          <div class="glossary-def">Diretoria-Geral da União Europeia para Saúde e Alimentação. Registro obrigatório
+            para exportar alimentos para os 27 países da UE. Samba tem esse registro.</div>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">FCO</div>
+          <div class="glossary-def">Full Corporate Offer — Oferta Corporativa Completa. Proposta formal da Samba com
+            todos os detalhes: produto, specs, preço, prazo, condições. Emitida pelos sócios.</div>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">Finder</div>
+          <div class="glossary-def">Indicador remunerado. Profissional que usa sua rede para apresentar compradores à
+            Samba Export, recebendo comissão de 10-30% por até 36 meses.</div>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">FOB</div>
+          <div class="glossary-def">Free On Board — O vendedor (Samba) entrega a mercadoria no porto de origem. O
+            comprador é responsável pelo frete marítimo e seguro.</div>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">FOSFA 54</div>
+          <div class="glossary-def">Federation of Oils, Seeds and Fats Associations. Conjunto de regras internacionais
+            para contratos de óleos e gorduras. Usado nos SPAs da Samba para óleos vegetais.</div>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">GACC</div>
+          <div class="glossary-def">General Administration of Customs of China — Registro necessário para exportar
+            alimentos para a China. Samba tem esse registro.</div>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">GAFTA 100</div>
+          <div class="glossary-def">Grain and Feed Trade Association. Conjunto de regras internacionais para contratos
+            de grãos. Usado nos SPAs da Samba para soja, milho, açúcar etc.</div>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">GMO</div>
+          <div class="glossary-def">Genetically Modified Organism — Organismo Geneticamente Modificado. A maioria da
+            soja e milho do Brasil é GMO. Alguns compradores exigem Non-GMO.</div>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">ICPO</div>
+          <div class="glossary-def">Irrevocable Corporate Purchase Order — Ordem de Compra Corporativa Irrevogável.
+            Documento formal do comprador confirmando pedido de compra.</div>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">ICUMSA</div>
+          <div class="glossary-def">International Commission for Uniform Methods of Sugar Analysis. Medida de cor e
+            pureza do açúcar. ICUMSA 45 = branco refinado. VHP (1200) = bruto.</div>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">KYC / CIS</div>
+          <div class="glossary-def">Know Your Customer / Customer Information Sheet. Documentos de identificação do
+            comprador. Due diligence básica antes de avançar.</div>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">LOI</div>
+          <div class="glossary-def">Letter of Intent — Carta de Intenção. Documento do comprador demonstrando
+            interesse
+            sério de compra. Precede o FCO e o SPA.</div>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">MT</div>
+          <div class="glossary-def">Metric Ton — Tonelada Métrica (1.000 kg). Unidade padrão para commodities
+            internacionais.</div>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">Mandatário</div>
+          <div class="glossary-def">Intermediário que representa um comprador. Tem uma "procuração" (mandato) para
+            negociar em nome de outro. Não é o comprador final.</div>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">NCDA / IFPA</div>
+          <div class="glossary-def">Non-Circumvention, Non-Disclosure Agreement — Acordo de Não Circunvenção e
+            Confidencialidade. Contrato obrigatório antes de qualquer negociação séria.</div>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">RBD</div>
+          <div class="glossary-def">Refined, Bleached and Deodorized — Óleo de Soja Refinado, Branqueado e
+            Desodorizado.
+            Óleo refinado para consumo humano direto.</div>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">SBLC</div>
+          <div class="glossary-def">Standby Letter of Credit — Carta de Crédito Standby. Garantia bancária de
+            pagamento,
+            padrão SWIFT MT760. Usada em contratos anuais de grande volume.</div>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">SGS / BV / Intertek</div>
+          <div class="glossary-def">Empresas de inspeção e certificação independentes. Verificam peso e qualidade da
+            mercadoria no porto antes do embarque. Garantia para o comprador.</div>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">SPA</div>
+          <div class="glossary-def">Sales and Purchase Agreement — Contrato de Compra e Venda. Contrato principal
+            assinado pela Samba e pelo comprador. Segue padrões GAFTA ou FOSFA.</div>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">TT</div>
+          <div class="glossary-def">Telegraphic Transfer — Transferência bancária internacional (equivalente a um
+            TED/DOC internacional). Usado em pedidos de teste: 30% adiantado + 70% antes do embarque.</div>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">VHP</div>
+          <div class="glossary-def">Very High Polarization — Açúcar bruto com alta polarização (pureza). ICUMSA ~1200.
+            Menos refinado que o ICUMSA 45. Usado por refinarias.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- ABA 9: REGRAS CRM -->
+    <!-- ============================================================ -->
+    <div id="crm" class="section">
+      <div class="page-title">📋 Regras do <span>CRM</span></div>
+      <div class="page-sub">Como registrar tudo certo na planilha e no Notion. Sem isso o processo perde qualidade.
+      </div>
+
+      <div class="card card-orange" style="margin-bottom:24px;">
+        <div class="card-title orange">Como Copiar o Link do LinkedIn — Passo a Passo</div>
+        <div class="grid3">
+          <div style="background:#fff;border-radius:8px;padding:14px;">
+            <div style="color:var(--orange);font-weight:900;font-size:22px;margin-bottom:8px;">01</div><strong>Abrir
+              no
+              computador</strong>
+            <div style="font-size:11px;color:var(--text-light);margin-top:6px;line-height:1.6;">Ir ao perfil pelo
+              navegador (Chrome, Edge ou Safari) — não pelo aplicativo de celular, pois a URL pode ser diferente.
+            </div>
+          </div>
+          <div style="background:#fff;border-radius:8px;padding:14px;">
+            <div style="color:var(--orange);font-weight:900;font-size:22px;margin-bottom:8px;">02</div><strong>Clicar
+              "Mais" ou "..."</strong>
+            <div style="font-size:11px;color:var(--text-light);margin-top:6px;line-height:1.6;">Abaixo da foto de
+              perfil
+              → clicar em <strong>"Mais"</strong> ou <strong>"..."</strong> → selecionar <strong>"Copiar link do
+                perfil"</strong>.</div>
+          </div>
+          <div style="background:#fff;border-radius:8px;padding:14px;">
+            <div style="color:var(--orange);font-weight:900;font-size:22px;margin-bottom:8px;">03</div><strong>Colar
+              no
+              CRM</strong>
+            <div style="font-size:11px;color:var(--text-light);margin-top:6px;line-height:1.6;">Coluna
+              <strong>"LinkedIn
+                URL"</strong>. A URL correta começa com: <code>linkedin.com/in/nomedapessoa</code>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid2">
+        <div>
+          <p style="font-weight:700;color:var(--orange);margin-bottom:12px;">Regras de preenchimento obrigatórias</p>
+          <div class="rule-item">
+            <div class="rule-num">1</div>
+            <div><strong>Registrar no mesmo dia do primeiro contato</strong><br><span
+                style="font-size:11px;color:var(--text-light);">Nunca "deixar para depois". Se falou com o lead hoje,
+                registra hoje.</span></div>
+          </div>
+          <div class="rule-item">
+            <div class="rule-num">2</div>
+            <div><strong>Usar exatamente as 14 categorias</strong><br><span
+                style="font-size:11px;color:var(--text-light);">Não inventar categorias. Se dúvida: categoria 14 (não
+                qualificado) e revisar depois.</span></div>
+          </div>
+          <div class="rule-item">
+            <div class="rule-num">3</div>
+            <div><strong>Registrar qual membro da equipe está tratando</strong><br><span
+                style="font-size:11px;color:var(--text-light);">Colunas com email: lbd@ / nmd@ / cjs@ / jrt@ / pmn@ /
+                marcelo.magalhaes@</span></div>
+          </div>
+          <div class="rule-item">
+            <div class="rule-num">4</div>
+            <div><strong>Nome do grupo WhatsApp sempre padronizado</strong><br><span
+                style="font-size:11px;color:var(--text-light);">"Samba x [Primeiro Nome] [Empresa]" — Ex: "Samba x
+                Tejinder MBB"</span></div>
+          </div>
+          <div class="rule-item">
+            <div class="rule-num">5</div>
+            <div><strong>Atualizar status a cada interação</strong><br><span
+                style="font-size:11px;color:var(--text-light);">Nunca deixar desatualizado por mais de 48h. Status
+                define prioridade.</span></div>
+          </div>
+        </div>
+
+        <div>
+          <p style="font-weight:700;color:var(--orange);margin-bottom:12px;">Status do Lead — Do início ao fechamento
+          </p>
+          <div style="display:flex;flex-wrap:wrap;gap:6px;">
+            <span class="pill" style="background:var(--blue-light);border-color:#90CAF9;color:var(--blue);">1.
+              Novo</span>
+            <span class="pill" style="background:var(--blue-light);border-color:#90CAF9;color:var(--blue);">2. Em
+              Contato</span>
+            <span class="pill" style="background:var(--orange-light);border-color:var(--orange);color:var(--orange);">3.
+              Qualificado</span>
+            <span class="pill" style="background:var(--orange-light);border-color:var(--orange);color:var(--orange);">4.
+              WhatsApp</span>
+            <span class="pill" style="background:var(--green-light);border-color:var(--green);color:var(--green);">5.
+              NCDA Enviado</span>
+            <span class="pill" style="background:var(--green-light);border-color:var(--green);color:var(--green);">6.
+              NCDA Assinado</span>
+            <span class="pill" style="background:var(--green-light);border-color:var(--green);color:var(--green);">7.
+              Em
+              Negociação</span>
+            <span class="pill" style="background:var(--green-light);border-color:var(--green);color:var(--green);">8.
+              FCO Enviado</span>
+            <span class="pill" style="background:#1b5e20;border-color:#1b5e20;color:#fff;">9. Fechado ✅</span>
+            <span class="pill" style="background:#f5f5f5;border-color:#ccc;color:#888;">10. Frio</span>
+            <span class="pill" style="background:#f5f5f5;border-color:#ccc;color:#888;">11. Descartado</span>
+          </div>
+
+          <div class="card" style="margin-top:16px;border-color:var(--red);">
+            <div class="card-title red">As 14 Categorias — usar exatamente estas</div>
+            <div style="font-size:11px;line-height:2;color:var(--text);">
+              01 — Comentou em post → Engajador → pitch Finder<br>
+              02 — Curtiu post → Engajador frio → convite de conexão<br>
+              03 — Compartilhou post → Engajador quente → prioridade<br>
+              04 — Visitou perfil sem conectar → enviar convite<br>
+              05 — Visitou Company Page → monitorar e conectar<br>
+              06 — Pediu conexão para nós → responder em 24h<br>
+              07 — Nós pedimos conexão → aguardar aceite<br>
+              08 — Respondeu com interesse → qualificar + WhatsApp<br>
+              09 — Respondeu sem interesse → pitch Finder<br>
+              10 — Não respondeu em 7 dias → follow-up único<br>
+              11 — Não respondeu ao follow-up → Frio<br>
+              12 — Qualificado → grupo WhatsApp + NCDA<br>
+              13 — Em negociação ativa → planilha em andamento<br>
+              14 — Não qualificado → arquivar
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- ABA 10: EQUIPE -->
+    <!-- ============================================================ -->
+    <div id="equipe" class="section">
+      <div class="page-title">👥 <span>Equipe</span> e Links</div>
+      <div class="page-sub">Quem é quem, qual é o papel de cada um e onde estão os materiais que você vai precisar.
+      </div>
+
+      <p style="font-weight:700;color:var(--orange);margin-bottom:16px;">Os 3 Sócios — Autoridade total para fechar
+        negócios</p>
+      <div class="grid3" style="margin-bottom:28px;">
+        <div class="profile-card">
+          <div class="profile-avatar">LB</div>
+          <div class="profile-name">Leonardo Brunelli</div>
+          <div class="profile-role">Sócio — Eficiência Operacional</div>
+          <div class="profile-desc">Posts de conteúdo: chão de fábrica, processos, logística, números. Responde
+            dúvidas
+            operacionais e de execução.</div>
+          <div class="profile-email">lbd@sambaexport.com.br</div>
+          <a href="https://www.linkedin.com/in/leonardobrunelli/" target="_blank" class="btn btn-outline btn-sm">Ver
+            LinkedIn →</a>
+        </div>
+        <div class="profile-card">
+          <div class="profile-avatar">ND</div>
+          <div class="profile-name">Nívio Domingues</div>
+          <div class="profile-role">Sócio — Comércio Exterior</div>
+          <div class="profile-desc">Posts de conteúdo: relações internacionais, destinos de exportação, humanizar a
+            marca. Especialista em regulação e comex.</div>
+          <div class="profile-email">nmd@sambaexport.com.br</div>
+          <a href="https://www.linkedin.com/in/niviodomingues/" target="_blank" class="btn btn-outline btn-sm">Ver
+            LinkedIn →</a>
+        </div>
+        <div class="profile-card">
+          <div class="profile-avatar">MM</div>
+          <div class="profile-name">Marcelo Magalhães</div>
+          <div class="profile-role">Sócio — Visão Estratégica</div>
+          <div class="profile-desc">Posts de conteúdo: geopolítica, tendências de mercado, agronegócio global.
+            Posicionamento macro da empresa.</div>
+          <div class="profile-email">marcelo.magalhaes@sambaexport.com.br</div>
+          <a href="https://www.linkedin.com/in/marcelomagalhaesn/" target="_blank" class="btn btn-outline btn-sm">Ver
+            LinkedIn →</a>
+        </div>
+      </div>
+
+      <p style="font-weight:700;color:var(--orange);margin-bottom:16px;">Equipe Operacional — Respondem os Linkedins e
+        operam o CRM</p>
+      <div class="grid3" style="margin-bottom:28px;">
+        <div class="card">
+          <div style="font-weight:700;font-size:13px;margin-bottom:4px;">Equipe CJS</div>
+          <div class="profile-email" style="margin-top:8px;">cjs@sambaexport.com.br</div>
+        </div>
+        <div class="card">
+          <div style="font-weight:700;font-size:13px;margin-bottom:4px;">Equipe JRT</div>
+          <div class="profile-email" style="margin-top:8px;">jrt@sambaexport.com.br</div>
+        </div>
+        <div class="card">
+          <div style="font-weight:700;font-size:13px;margin-bottom:4px;">Equipe PMN</div>
+          <div class="profile-email" style="margin-top:8px;">pmn@sambaexport.com.br</div>
+        </div>
+      </div>
+
+      <p style="font-weight:700;color:var(--orange);margin-bottom:16px;">Links das Apresentações — Compartilhar no
+        momento certo</p>
+      <div class="card" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+        <div><strong>Portfolio Global — Todos os produtos</strong>
+          <div style="font-size:11px;color:var(--text-light);margin-top:2px;">Compartilhar com compradores
+            qualificados
+            APÓS assinatura do NCDA</div>
+        </div><a href="https://www.sambaexport.com.br" target="_blank" class="btn btn-orange btn-sm">ABRIR →</a>
+      </div>
+      <div class="card" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+        <div><strong>Programa de Finders</strong>
+          <div style="font-size:11px;color:var(--text-light);margin-top:2px;">Compartilhar com Engajadores após pitch
+            (Script G)</div>
+        </div><a href="https://www.sambaexport.com.br/finder/" target="_blank" class="btn btn-orange btn-sm">ABRIR
+          →</a>
+      </div>
+      <div class="card" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+        <div><strong>CRM + Playbook no Notion</strong>
+          <div style="font-size:11px;color:var(--text-light);margin-top:2px;">Hub central da equipe — registrar TODOS
+            os
+            leads aqui</div>
+        </div><a href="https://notion.so/34b448b387d38185a8d6f7f179e3e705" target="_blank"
+          class="btn btn-orange btn-sm">ABRIR →</a>
+      </div>
+      <div class="card" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+        <div><strong>LinkedIn Company Page — Samba Export</strong>
+          <div style="font-size:11px;color:var(--text-light);margin-top:2px;">Página oficial da empresa — monitorar
+            quem
+            visita</div>
+        </div><a href="https://www.linkedin.com/company/samba-export/" target="_blank"
+          class="btn btn-orange btn-sm">ABRIR →</a>
+      </div>
+
+      <div class="card card-green" style="margin-top:16px;">
+        <div class="card-title green">💡 Quem faz o quê — Resumo final</div>
+        <table class="mini-table">
+          <tr>
+            <th>Quem</th>
+            <th>Faz o quê</th>
+          </tr>
+          <tr>
+            <td><strong>Equipe (todos)</strong></td>
+            <td>Identifica lead, classifica no CRM, envia scripts, filtra perguntas, cria grupo WhatsApp</td>
+          </tr>
+          <tr>
+            <td><strong>Leonardo + Nívio + Marcelo</strong></td>
+            <td>Confirmam preços, emitem FCO, assinam contratos, fecham negócios</td>
+          </tr>
+          <tr>
+            <td><strong>Claude + ChatGPT</strong></td>
+            <td>Ajudam a entender o que o lead pediu, sugerem resposta, traduzem — mas nunca definem preço final</td>
+          </tr>
+          <tr>
+            <td><strong>ZapSign (sistema)</strong></td>
+            <td>Envia NCDA automaticamente quando lead migra para WhatsApp</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="card" style="margin-top:16px;">
+        <div class="card-title">Contatos Oficiais Samba Export</div>
+        <div class="grid3">
+          <div style="background:var(--bg);border-radius:6px;padding:10px;">
+            <div style="font-size:10px;color:var(--text-light);">Email Comercial</div>
+            <div style="font-weight:700;font-family:monospace;font-size:12px;color:var(--orange);">
+              commercial@sambaexport.com.br</div>
+          </div>
+          <div style="background:var(--bg);border-radius:6px;padding:10px;">
+            <div style="font-size:10px;color:var(--text-light);">WhatsApp</div>
+            <div style="font-weight:700;font-family:monospace;font-size:12px;color:var(--orange);">+55 13 991405566
+            </div>
+          </div>
+          <div style="background:var(--bg);border-radius:6px;padding:10px;">
+            <div style="font-size:10px;color:var(--text-light);">WeChat</div>
+            <div style="font-weight:700;font-family:monospace;font-size:12px;color:var(--orange);">SambaExport</div>
+          </div>
+          <div style="background:var(--bg);border-radius:6px;padding:10px;">
+            <div style="font-size:10px;color:var(--text-light);">CNPJ</div>
+            <div style="font-weight:700;font-family:monospace;font-size:12px;color:var(--orange);">60.280.015/0001-82
+            </div>
+          </div>
+          <div style="background:var(--bg);border-radius:6px;padding:10px;">
+            <div style="font-size:10px;color:var(--text-light);">Endereço</div>
+            <div style="font-weight:700;font-size:11px;color:var(--orange);">Av. Faria Lima 1811, Sala 115, SP</div>
+          </div>
+          <div style="background:var(--bg);border-radius:6px;padding:10px;">
+            <div style="font-size:10px;color:var(--text-light);">Site</div>
+            <div style="font-weight:700;font-family:monospace;font-size:12px;color:var(--orange);">
+              www.sambaexport.com.br</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- fim content -->
+
+  <script>
+    function showTab(id, btn) {
+      document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      btn.classList.add('active');
+      window.scrollTo(0, 0);
+    }
+    function showTabByBtn(id) {
+      document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      document.querySelectorAll('.tab-btn').forEach(t => {
+        if (t.getAttribute('onclick') && t.getAttribute('onclick').includes("'" + id + "'")) t.classList.add('active');
+      });
+      window.scrollTo(0, 0);
+    }
+    function toggleScript(id) {
+      var el = document.getElementById(id);
+      var header = el.querySelector('.script-header');
+      var body = el.querySelector('.script-body');
+      var arrow = header.querySelector('span:last-child');
+      var isOpen = body.classList.contains('open');
+      body.classList.toggle('open', !isOpen);
+      header.classList.toggle('open', !isOpen);
+      if (arrow) arrow.textContent = isOpen ? '▼' : '▲';
+    }
+    function toggleFaq(el) {
+      var answer = el.nextElementSibling;
+      var isOpen = answer.classList.contains('open');
+      answer.classList.toggle('open', !isOpen);
+      el.classList.toggle('open', !isOpen);
+      el.querySelector('span').textContent = isOpen ? '▼' : '▲';
+    }
+    function toggleEx(id) {
+      var body = document.getElementById(id);
+      body.classList.toggle('open');
+      var header = body.previousElementSibling;
+      var arrow = header.querySelector('span:last-child');
+      if (arrow) arrow.textContent = body.classList.contains('open') ? '▲' : '▼';
+    }
+    function avaliar() {
+      var inputs = document.querySelectorAll('#filtro input[type=text]');
+      var filled = 0;
+      inputs.forEach(function (i) { if (i.value && i.value.trim().length > 2) filled++; });
+      var result = document.getElementById('score-result');
+      result.style.display = 'block';
+      var color = filled >= 7 ? 'var(--green)' : filled >= 4 ? 'var(--orange)' : 'var(--red)';
+      var bg = filled >= 7 ? 'var(--green-light)' : filled >= 4 ? 'var(--orange-light)' : 'var(--red-light)';
+      var msg = filled >= 7 ? '✅ QUALIFICADO — Migrar para WhatsApp + enviar NCDA' : filled >= 4 ? '⚠️ PARCIAL — Continue qualificando antes de avançar' : '❌ INSUFICIENTE — Não envie proposta ainda';
+      result.style.background = bg;
+      result.style.borderColor = color;
+      result.innerHTML = '<div style="font-size:32px;font-weight:900;color:' + color + ';text-align:center;margin-bottom:8px;">' + filled + '/10</div><div style="font-size:12px;text-align:center;font-weight:700;color:' + color + ';">' + msg + '</div>';
+    }
+  </script>
+</body>
+
+</html>

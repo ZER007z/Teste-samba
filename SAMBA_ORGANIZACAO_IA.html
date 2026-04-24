@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Samba Export — Organização & Treinamento IA</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap');
+:root {
+  --orange:#FA8200; --orange-light:#FFF3E0; --orange-mid:#FFE0B2;
+  --black:#1a1a1a; --text:#2d2d2d; --text-light:#777;
+  --border:#e8e8e8; --bg:#f7f7f7; --white:#ffffff;
+  --green:#2e7d32; --green-light:#E8F5E9;
+  --red:#c62828; --red-light:#FFEBEE;
+  --blue:#1565C0; --blue-light:#E3F2FD;
+  --yellow-light:#FFFDE7; --yellow:#F9A825;
+  --purple:#6A1B9A; --purple-light:#F3E5F5;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--text);font-size:13px;line-height:1.5;}
+
+/* HEADER */
+.header{background:var(--white);border-bottom:4px solid var(--orange);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:0 2px 8px rgba(0,0,0,0.07);}
+.logo{font-size:20px;font-weight:900;color:var(--black);}
+.logo span{color:var(--orange);}
+.header-tags{display:flex;gap:8px;}
+.htag{background:var(--orange-light);color:var(--orange);font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;letter-spacing:.5px;}
+.htag.ai{background:var(--purple-light);color:var(--purple);}
+
+/* TABS */
+.tabs{background:var(--white);border-bottom:1px solid var(--border);padding:0 24px;display:flex;overflow-x:auto;}
+.tab{padding:13px 16px;cursor:pointer;font-weight:700;font-size:11px;border:none;background:transparent;color:var(--text-light);border-bottom:3px solid transparent;white-space:nowrap;transition:all .2s;}
+.tab:hover{color:var(--orange);}
+.tab.active{color:var(--orange);border-bottom-color:var(--orange);background:var(--orange-light);}
+
+/* CONTENT */
+.content{padding:24px;max-width:1400px;margin:0 auto;}
+.section{display:none;}
+.section.active{display:block;}
+
+/* TYPOGRAPHY */
+.page-title{font-size:22px;font-weight:900;color:var(--black);margin-bottom:4px;}
+.page-title span{color:var(--orange);}
+.page-sub{color:var(--text-light);font-size:12px;margin-bottom:24px;padding-bottom:18px;border-bottom:1px solid var(--border);}
+
+/* CARDS */
+.card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:14px;box-shadow:0 1px 4px rgba(0,0,0,0.04);}
+.card-orange{border-left:4px solid var(--orange);background:var(--orange-light);}
+.card-green{border-left:4px solid var(--green);background:var(--green-light);}
+.card-blue{border-left:4px solid var(--blue);background:var(--blue-light);}
+.card-purple{border-left:4px solid var(--purple);background:var(--purple-light);}
+.card-yellow{border-left:4px solid var(--yellow);background:var(--yellow-light);}
+
+/* GRID */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+
+/* BADGE */
+.badge{display:inline-block;border-radius:6px;padding:3px 9px;font-size:10px;font-weight:800;letter-spacing:.3px;}
+.badge-orange{background:var(--orange);color:#fff;}
+.badge-green{background:var(--green);color:#fff;}
+.badge-blue{background:var(--blue);color:#fff;}
+.badge-purple{background:var(--purple);color:#fff;}
+.badge-gray{background:#e0e0e0;color:#666;}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:6px;border-radius:8px;padding:9px 18px;font-size:12px;font-weight:700;cursor:pointer;border:none;font-family:'Montserrat',sans-serif;transition:all .2s;}
+.btn-orange{background:var(--orange);color:#fff;}
+.btn-orange:hover{background:#e07300;}
+.btn-outline{background:transparent;border:2px solid var(--orange);color:var(--orange);}
+.btn-outline:hover{background:var(--orange-light);}
+.btn-green{background:var(--green);color:#fff;}
+.btn-purple{background:var(--purple);color:#fff;}
+.btn-gray{background:#e0e0e0;color:#555;}
+.btn-sm{padding:5px 12px;font-size:11px;}
+.btn:disabled{opacity:.5;cursor:not-allowed;}
+
+/* ========================= ORGANIZAÇÃO ========================= */
+
+/* USER SELECTOR */
+.user-selector{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px;}
+.user-btn{padding:10px 18px;border-radius:30px;border:2px solid var(--border);background:var(--white);cursor:pointer;font-weight:700;font-size:12px;font-family:'Montserrat',sans-serif;transition:all .2s;display:flex;align-items:center;gap:8px;}
+.user-btn:hover{border-color:var(--orange);}
+.user-btn.selected{border-color:var(--orange);background:var(--orange);color:#fff;}
+.user-avatar-sm{width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,0.3);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:11px;}
+.user-btn:not(.selected) .user-avatar-sm{background:var(--orange-light);color:var(--orange);}
+
+/* PASTE ZONE */
+.paste-zone{background:var(--white);border:2px dashed var(--border);border-radius:12px;min-height:220px;padding:20px;transition:all .2s;position:relative;}
+.paste-zone:focus-within{border-color:var(--orange);box-shadow:0 0 0 3px var(--orange-light);}
+.paste-zone.has-image{border-style:solid;border-color:var(--orange);}
+.paste-label{font-size:12px;color:var(--text-light);margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+.paste-textarea{width:100%;min-height:160px;border:none;outline:none;font-family:'Montserrat',sans-serif;font-size:13px;color:var(--text);resize:vertical;background:transparent;line-height:1.7;}
+.paste-textarea::placeholder{color:#bbb;}
+.image-preview{max-width:100%;border-radius:8px;margin-top:10px;display:none;}
+.image-preview.show{display:block;}
+.paste-actions{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap;}
+
+/* AI OUTPUT */
+.ai-output{background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
+.ai-output-header{background:var(--orange);color:#fff;padding:12px 18px;font-weight:800;font-size:13px;display:flex;justify-content:space-between;align-items:center;}
+.ai-output-body{padding:18px;}
+.crm-fields{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.crm-field{background:var(--bg);border-radius:8px;padding:10px 14px;}
+.crm-field-label{font-size:10px;font-weight:700;color:var(--text-light);letter-spacing:.5px;margin-bottom:4px;text-transform:uppercase;}
+.crm-field-value{font-size:13px;font-weight:600;color:var(--black);}
+.crm-field-value.empty{color:#ccc;font-style:italic;font-weight:400;}
+.notion-block{background:#f9f9f9;border:1px solid var(--border);border-radius:8px;padding:14px;font-family:monospace;font-size:11px;line-height:1.8;white-space:pre-wrap;max-height:300px;overflow-y:auto;}
+
+/* LOADING */
+.loading-dots{display:none;align-items:center;gap:4px;}
+.loading-dots.show{display:flex;}
+.dot{width:8px;height:8px;background:var(--orange);border-radius:50%;animation:bounce .6s infinite alternate;}
+.dot:nth-child(2){animation-delay:.2s;}
+.dot:nth-child(3){animation-delay:.4s;}
+@keyframes bounce{from{transform:translateY(0);}to{transform:translateY(-8px);}}
+
+/* HISTORY */
+.history-item{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:10px;}
+.history-meta{display:flex;gap:10px;align-items:center;margin-bottom:8px;}
+.history-text{font-size:12px;color:var(--text);line-height:1.6;}
+
+/* ========================= TREINAMENTO ========================= */
+
+/* CHAT */
+.chat-layout{display:grid;grid-template-columns:280px 1fr;gap:16px;height:calc(100vh - 220px);min-height:500px;}
+.chat-sidebar{display:flex;flex-direction:column;gap:12px;}
+.chat-main{display:flex;flex-direction:column;background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
+.chat-header{padding:14px 18px;background:var(--orange);color:#fff;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:space-between;}
+.chat-messages{flex:1;overflow-y:auto;padding:18px;display:flex;flex-direction:column;gap:14px;background:#fafafa;}
+.msg{max-width:80%;display:flex;flex-direction:column;gap:4px;}
+.msg.user{align-self:flex-end;}
+.msg.assistant{align-self:flex-start;}
+.msg-bubble{padding:12px 16px;border-radius:12px;font-size:12px;line-height:1.7;}
+.msg.user .msg-bubble{background:var(--orange);color:#fff;border-radius:12px 12px 2px 12px;}
+.msg.assistant .msg-bubble{background:var(--white);border:1px solid var(--border);color:var(--text);border-radius:12px 12px 12px 2px;}
+.msg-meta{font-size:10px;color:var(--text-light);}
+.msg.user .msg-meta{text-align:right;}
+.chat-input-area{padding:14px;border-top:1px solid var(--border);display:flex;gap:10px;background:var(--white);}
+.chat-input{flex:1;border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-family:'Montserrat',sans-serif;font-size:12px;outline:none;resize:none;min-height:44px;max-height:120px;}
+.chat-input:focus{border-color:var(--orange);}
+
+/* USER CARD SIDEBAR */
+.user-card-chat{background:var(--white);border:2px solid var(--border);border-radius:12px;padding:16px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:12px;}
+.user-card-chat:hover{border-color:var(--orange);}
+.user-card-chat.selected{border-color:var(--orange);background:var(--orange-light);}
+.uca{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:16px;flex-shrink:0;}
+.user-card-info{flex:1;}
+.user-card-name{font-weight:800;font-size:13px;color:var(--black);}
+.user-card-role{font-size:10px;color:var(--text-light);margin-top:2px;}
+.user-card-count{font-size:10px;font-weight:700;color:var(--orange);}
+
+/* QUICK QUESTIONS */
+.quick-q{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px 14px;cursor:pointer;font-size:11px;font-weight:600;transition:all .2s;text-align:left;width:100%;font-family:'Montserrat',sans-serif;color:var(--text);}
+.quick-q:hover{background:var(--orange-light);border-color:var(--orange);color:var(--orange);}
+
+/* FAQ REAL */
+.real-faq{background:var(--white);border:1px solid var(--border);border-radius:10px;margin-bottom:10px;overflow:hidden;}
+.real-faq-header{padding:14px 18px;cursor:pointer;display:flex;justify-content:space-between;align-items:flex-start;gap:12px;}
+.real-faq-header:hover{background:var(--bg);}
+.real-faq-q{font-weight:700;font-size:12px;color:var(--text);}
+.real-faq-meta{font-size:10px;color:var(--text-light);margin-top:3px;}
+.real-faq-body{display:none;padding:0 18px 16px;font-size:12px;line-height:1.8;color:var(--text);}
+.real-faq-body.open{display:block;}
+
+/* TOGGLE ARROW */
+.arrow-toggle{color:var(--orange);font-size:14px;flex-shrink:0;}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--green);color:#fff;padding:12px 20px;border-radius:8px;font-weight:700;font-size:12px;z-index:9999;opacity:0;transform:translateY(20px);transition:all .3s;}
+.toast.show{opacity:1;transform:translateY(0);}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:5px;height:5px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:#ccc;border-radius:3px;}
+::-webkit-scrollbar-thumb:hover{background:#aaa;}
+
+@media(max-width:768px){
+  .grid2,.grid3,.chat-layout{grid-template-columns:1fr;}
+  .content{padding:14px;}
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div style="display:flex;align-items:center;gap:14px;">
+    <a href="SAMBA_HUB_EQUIPE_v3.html" style="text-decoration:none;color:var(--text-light);font-size:11px;font-weight:700;">← Hub Principal</a>
+    <div class="logo"><span>samba</span>EXPORT</div>
+  </div>
+  <div class="header-tags">
+    <span class="htag">ORGANIZAÇÃO + IA</span>
+    <span class="htag ai">⚡ CLAUDE INTEGRADO</span>
+  </div>
+</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="showTab('org',this)">📋 ORGANIZAÇÃO — Cole aqui</button>
+  <button class="tab" onclick="showTab('treino',this)">🤖 TREINAMENTO COM IA</button>
+  <button class="tab" onclick="showTab('faqs_reais',this)">💬 DÚVIDAS REAIS da Equipe</button>
+</div>
+
+<div class="content">
+
+<!-- ============================================================ -->
+<!-- ABA 1: ORGANIZAÇÃO -->
+<!-- ============================================================ -->
+<div id="org" class="section active">
+  <div class="page-title">📋 <span>Organização</span> — Cole qualquer coisa aqui</div>
+  <div class="page-sub">Cole texto, mensagens do WhatsApp, prints de conversa, e-mails ou imagens. A IA organiza tudo no formato do CRM da Samba Export — pronto para colar no Notion.</div>
+
+  <div class="grid2">
+    <!-- COLUNA ESQUERDA: INPUT -->
+    <div>
+      <!-- SELETOR DE USUÁRIO -->
+      <div class="card">
+        <div style="font-weight:700;font-size:12px;color:var(--orange);margin-bottom:12px;">👤 Quem está colando?</div>
+        <div class="user-selector" id="userSelector">
+          <button class="user-btn selected" onclick="selectUser(this,'Jackeline')"><div class="user-avatar-sm">JA</div>Jackeline</button>
+          <button class="user-btn" onclick="selectUser(this,'Pedro')"><div class="user-avatar-sm">PE</div>Pedro</button>
+          <button class="user-btn" onclick="selectUser(this,'Claudio')"><div class="user-avatar-sm">CL</div>Claudio</button>
+          <button class="user-btn" onclick="selectUser(this,'Stella')"><div class="user-avatar-sm">ST</div>Stella</button>
+          <button class="user-btn" onclick="selectUser(this,'Leonardo')"><div class="user-avatar-sm">LB</div>Leonardo</button>
+          <button class="user-btn" onclick="selectUser(this,'Marcelo')"><div class="user-avatar-sm">MM</div>Marcelo</button>
+          <button class="user-btn" onclick="selectUser(this,'Nívio')"><div class="user-avatar-sm">ND</div>Nívio</button>
+        </div>
+      </div>
+
+      <!-- ZONA DE PASTE -->
+      <div class="card" style="padding:0;overflow:hidden;">
+        <div style="padding:14px 18px;background:var(--bg);border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
+          <div style="font-weight:700;font-size:12px;">📥 Cole aqui — Ctrl+V funciona direto</div>
+          <div class="loading-dots" id="loadingDots">
+            <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+            <span style="font-size:11px;color:var(--orange);margin-left:6px;font-weight:700;">Processando...</span>
+          </div>
+        </div>
+        <div class="paste-zone" id="pasteZone">
+          <textarea
+            class="paste-textarea"
+            id="pasteText"
+            placeholder="Cole aqui qualquer coisa:&#10;&#10;• Mensagem do LinkedIn ou WhatsApp&#10;• E-mail de um comprador&#10;• Texto com nome, empresa, produto pedido&#10;• Print de conversa (Ctrl+V com imagem)&#10;• Qualquer informação sobre um lead&#10;&#10;A IA vai entender e organizar tudo automaticamente."
+            onpaste="handlePaste(event)"
+          ></textarea>
+          <img id="pastedImage" class="image-preview" alt="Imagem colada">
+          <div class="paste-actions">
+            <button class="btn btn-orange" onclick="processarIA()" id="btnProcessar">⚡ Organizar com IA</button>
+            <button class="btn btn-outline btn-sm" onclick="limparTudo()">🗑️ Limpar</button>
+            <span id="charCount" style="font-size:11px;color:var(--text-light);align-self:center;"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- EXEMPLOS RÁPIDOS -->
+      <div class="card card-yellow">
+        <div style="font-weight:700;font-size:12px;color:#7B5800;margin-bottom:10px;">💡 Exemplos do que você pode colar</div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <button class="quick-q" onclick="preencherExemplo('linkedin')">▶ Mensagem do LinkedIn de um lead</button>
+          <button class="quick-q" onclick="preencherExemplo('whatsapp')">▶ Conversa de WhatsApp com comprador</button>
+          <button class="quick-q" onclick="preencherExemplo('email')">▶ E-mail de pedido de cotação</button>
+          <button class="quick-q" onclick="preencherExemplo('notas')">▶ Anotações soltas sobre um contato</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- COLUNA DIREITA: OUTPUT -->
+    <div>
+      <div class="ai-output" id="outputArea">
+        <div class="ai-output-header">
+          <span>✨ Resultado Organizado pela IA</span>
+          <div style="display:flex;gap:8px;" id="outputBtns" style="display:none;">
+            <button class="btn btn-sm" style="background:rgba(255,255,255,.2);color:#fff;border:none;cursor:pointer;" onclick="copiarNotion()">📋 Copiar para Notion</button>
+            <button class="btn btn-sm" style="background:rgba(255,255,255,.2);color:#fff;border:none;cursor:pointer;" onclick="salvarHistorico()">💾 Salvar</button>
+          </div>
+        </div>
+        <div class="ai-output-body" id="outputBody">
+          <div style="text-align:center;padding:40px 20px;color:var(--text-light);">
+            <div style="font-size:48px;margin-bottom:16px;">📋</div>
+            <div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:8px;">Cole algo à esquerda e clique em "Organizar com IA"</div>
+            <div style="font-size:12px;line-height:1.7;">A IA vai extrair automaticamente:<br>Nome · Empresa · Commodity · Volume · Porto · País · Status · Observações<br>e formatar tudo pronto para o CRM no Notion.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- HISTÓRICO -->
+      <div class="card" style="margin-top:0;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+          <div style="font-weight:700;font-size:12px;color:var(--orange);">📂 Histórico desta sessão</div>
+          <button class="btn btn-gray btn-sm" onclick="limparHistorico()">Limpar</button>
+        </div>
+        <div id="historyList">
+          <div style="text-align:center;padding:20px;color:var(--text-light);font-size:12px;">Nenhum registro ainda. Organize algo para aparecer aqui.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- ABA 2: TREINAMENTO COM IA -->
+<!-- ============================================================ -->
+<div id="treino" class="section">
+  <div class="page-title">🤖 Treinamento com <span>IA</span></div>
+  <div class="page-sub">Pergunte qualquer coisa sobre commodities, LinkedIn, vendas ou o processo da Samba Export. A IA responde como se fosse Nívio, Marcelo ou Leonardo.</div>
+
+  <div class="chat-layout">
+    <!-- SIDEBAR -->
+    <div class="chat-sidebar">
+      <div style="font-weight:700;font-size:12px;color:var(--orange);margin-bottom:4px;">Quem está perguntando?</div>
+
+      <div class="user-card-chat selected" onclick="selectChatUser(this,'Jackeline','JA','#E91E63')" id="cu_jackeline">
+        <div class="uca" style="background:#FCE4EC;color:#E91E63;">JA</div>
+        <div class="user-card-info">
+          <div class="user-card-name">Jackeline</div>
+          <div class="user-card-role">Equipe Operacional</div>
+          <div class="user-card-count" id="cnt_Jackeline">0 perguntas feitas</div>
+        </div>
+      </div>
+      <div class="user-card-chat" onclick="selectChatUser(this,'Pedro','PE','#1565C0')" id="cu_pedro">
+        <div class="uca" style="background:#E3F2FD;color:#1565C0;">PE</div>
+        <div class="user-card-info">
+          <div class="user-card-name">Pedro</div>
+          <div class="user-card-role">Equipe Operacional</div>
+          <div class="user-card-count" id="cnt_Pedro">0 perguntas feitas</div>
+        </div>
+      </div>
+      <div class="user-card-chat" onclick="selectChatUser(this,'Claudio','CL','#2E7D32')" id="cu_claudio">
+        <div class="uca" style="background:#E8F5E9;color:#2E7D32;">CL</div>
+        <div class="user-card-info">
+          <div class="user-card-name">Claudio</div>
+          <div class="user-card-role">Equipe Operacional</div>
+          <div class="user-card-count" id="cnt_Claudio">0 perguntas feitas</div>
+        </div>
+      </div>
+      <div class="user-card-chat" onclick="selectChatUser(this,'Stella','ST','#6A1B9A')" id="cu_stella">
+        <div class="uca" style="background:#F3E5F5;color:#6A1B9A;">ST</div>
+        <div class="user-card-info">
+          <div class="user-card-name">Stella</div>
+          <div class="user-card-role">Equipe Operacional</div>
+          <div class="user-card-count" id="cnt_Stella">0 perguntas feitas</div>
+        </div>
+      </div>
+
+      <div style="border-top:1px solid var(--border);padding-top:12px;margin-top:4px;">
+        <div style="font-weight:700;font-size:11px;color:var(--text-light);margin-bottom:8px;">💡 Perguntas rápidas</div>
+        <button class="quick-q" onclick="enviarRapido('O que é CIF e FOB? Explica simples.')">O que é CIF e FOB?</button>
+        <button class="quick-q" onclick="enviarRapido('Recebi uma mensagem de alguém que quer comprar açúcar. O que faço?')">Lead quer comprar açúcar</button>
+        <button class="quick-q" onclick="enviarRapido('O que é ICUMSA 45? Qual a diferença para ICUMSA 150?')">ICUMSA 45 vs 150</button>
+        <button class="quick-q" onclick="enviarRapido('O lead não respondeu há 7 dias. O que faço?')">Lead não respondeu</button>
+        <button class="quick-q" onclick="enviarRapido('O que é um Finder e como apresento o programa para alguém?')">O que é Finder?</button>
+        <button class="quick-q" onclick="enviarRapido('O lead perguntou o preço do milho. O que respondo?')">Lead pediu preço de milho</button>
+        <button class="quick-q" onclick="enviarRapido('O que é NCDA e por que precisa assinar antes de avançar?')">O que é NCDA?</button>
+        <button class="quick-q" onclick="enviarRapido('Como crio o grupo no WhatsApp corretamente?')">Como criar grupo WhatsApp</button>
+      </div>
+    </div>
+
+    <!-- CHAT MAIN -->
+    <div class="chat-main">
+      <div class="chat-header">
+        <div>
+          <span id="chatUserName">Jackeline</span> está perguntando
+          <div style="font-size:10px;font-weight:400;opacity:.8;margin-top:2px;">Assistente Samba Export — responde em português</div>
+        </div>
+        <button class="btn btn-sm" style="background:rgba(255,255,255,.2);color:#fff;border:none;cursor:pointer;" onclick="limparChat()">🗑️ Limpar chat</button>
+      </div>
+
+      <div class="chat-messages" id="chatMessages">
+        <div class="msg assistant">
+          <div class="msg-bubble">
+            Olá! 👋 Sou o assistente de treinamento da <strong>Samba Export</strong>.<br><br>
+            Pode me perguntar qualquer coisa sobre:<br>
+            • Como responder mensagens no LinkedIn<br>
+            • O que significam termos como CIF, ICUMSA, SBLC, GMO...<br>
+            • Como qualificar um lead<br>
+            • O Programa de Finders<br>
+            • Qualquer dúvida do dia a dia<br><br>
+            <strong>Fala sem medo — estou aqui para ajudar! 🎯</strong>
+          </div>
+          <div class="msg-meta">Assistente · agora</div>
+        </div>
+      </div>
+
+      <div class="chat-input-area">
+        <textarea
+          class="chat-input"
+          id="chatInput"
+          placeholder="Digite sua dúvida aqui... Ex: 'O que é ICUMSA 45?' ou 'Lead pediu preço de soja, o que faço?'"
+          onkeydown="checkEnter(event)"
+          rows="1"
+          oninput="autoResize(this)"
+        ></textarea>
+        <button class="btn btn-orange" onclick="enviarMensagem()" id="btnEnviar">Enviar ➤</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- ABA 3: DÚVIDAS REAIS -->
+<!-- ============================================================ -->
+<div id="faqs_reais" class="section">
+  <div class="page-title">💬 Dúvidas <span>Reais</span> da Equipe</div>
+  <div class="page-sub">Perguntas que Jackeline, Pedro, Claudio e Stella fizeram de verdade — com respostas completas. Cada nova dúvida respondida no chat é salva aqui automaticamente.</div>
+
+  <div class="grid2">
+    <div>
+      <div style="font-weight:700;color:var(--orange);font-size:12px;margin-bottom:12px;">💾 Salvas do Treinamento IA</div>
+      <div id="savedFaqs">
+        <div class="card card-yellow">
+          <div style="font-size:12px;color:#7B5800;line-height:1.7;">As dúvidas respondidas no chat aparecem aqui automaticamente quando você clica em <strong>"Salvar como dúvida"</strong> no chat.<br><br>Com o tempo, esta seção vai virar um banco de exemplos reais da sua equipe! 📚</div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div style="font-weight:700;color:var(--orange);font-size:12px;margin-bottom:12px;">📌 Dúvidas Frequentes — Já respondidas</div>
+
+      <div class="real-faq">
+        <div class="real-faq-header" onclick="toggleRealFaq(this)">
+          <div><div class="real-faq-q">Recebi uma mensagem: "Hi, I'm interested in your commodities." O que faço?</div><div class="real-faq-meta"><span class="badge badge-purple">Frequente</span> · Situação real do LinkedIn</div></div>
+          <span class="arrow-toggle">▼</span>
+        </div>
+        <div class="real-faq-body">
+          <p>Essa é uma mensagem de interesse genérico. É o momento de <strong>qualificar</strong> o lead. Responda com o Script B:</p><br>
+          <div style="background:#E8F5E9;border-radius:8px;padding:12px;font-family:monospace;font-size:11px;line-height:1.7;">"Hi [Nome]! Great to connect.<br>We are Brazilian commodity originators and exporters — large scale, full compliance, competitive CIF worldwide.<br>Are you a buyer or do you represent import demand for any specific commodity?"</div><br>
+          <p>O objetivo é descobrir se ele é comprador direto ou intermediário. <strong>Não mande PDF ainda.</strong> Espere ele responder qual commodity.</p>
+        </div>
+      </div>
+
+      <div class="real-faq">
+        <div class="real-faq-header" onclick="toggleRealFaq(this)">
+          <div><div class="real-faq-q">O lead me pediu "soybean meal 46% protein". O que é isso exatamente?</div><div class="real-faq-meta"><span class="badge badge-blue">Commodity</span> · Dúvida de produto</div></div>
+          <span class="arrow-toggle">▼</span>
+        </div>
+        <div class="real-faq-body">
+          <p><strong>Farelo de Soja com 46% de proteína.</strong></p><br>
+          <p>O Farelo de Soja é o que sobra depois que a soja é prensada para extrair o óleo. É rico em proteína e usado principalmente como ração animal — alimenta frango, suíno, bovino e peixes em todo o mundo.</p><br>
+          <p>46% de proteína é o padrão de exportação. Também existe 48% que é mais caro e mais puro.</p><br>
+          <p>A Samba tem farelo de soja com originação própria. Use o Script D para qualificar: volume, porto, CIF ou FOB.</p>
+        </div>
+      </div>
+
+      <div class="real-faq">
+        <div class="real-faq-header" onclick="toggleRealFaq(this)">
+          <div><div class="real-faq-q">O lead falou em "chicken paws". Isso é o quê? A Samba vende?</div><div class="real-faq-meta"><span class="badge badge-green">Proteínas</span> · Produto animal</div></div>
+          <span class="arrow-toggle">▼</span>
+        </div>
+        <div class="real-faq-body">
+          <p><strong>Chicken Paws = Patas de Frango.</strong></p><br>
+          <p>É um dos produtos de proteína animal mais exportados pelo Brasil, principalmente para a China, onde é muito apreciado na culinária.</p><br>
+          <p>Sim, a Samba vende. Está na categoria de Proteínas Animais. Use o Script D para qualificar: volume (normalmente em MT), porto destino (geralmente China), CIF ou FOB.</p><br>
+          <p><strong>Atenção:</strong> Para China é preciso verificar registro GACC do frigorífico fornecedor. Passe para Nívio ou Marcelo após qualificar.</p>
+        </div>
+      </div>
+
+      <div class="real-faq">
+        <div class="real-faq-header" onclick="toggleRealFaq(this)">
+          <div><div class="real-faq-q">O lead disse "we have mandate". O que isso quer dizer? É confiável?</div><div class="real-faq-meta"><span class="badge badge-orange">Alerta</span> · Perfil de lead</div></div>
+          <span class="arrow-toggle">▼</span>
+        </div>
+        <div class="real-faq-body">
+          <p>"I have a mandate" = <strong>Tenho uma procuração/autorização</strong> de um comprador para negociar em nome dele.</p><br>
+          <p>Isso significa que ele não é o comprador final — ele é um intermediário com autorização para comprar.</p><br>
+          <p><strong>Confiável?</strong> Pode ser ou não. É muito comum no mercado de commodities internacionais. Para avançar, peça:</p>
+          <ul style="margin:8px 0 8px 20px;">
+            <li>Carta de mandato (mandate letter)</li>
+            <li>KYC da empresa compradora</li>
+            <li>Confirmação do instrumento de pagamento</li>
+          </ul>
+          <p>Se ele se recusar a fornecer qualquer documento, é sinal de alerta. Passe para os sócios avaliar.</p>
+        </div>
+      </div>
+
+      <div class="real-faq">
+        <div class="real-faq-header" onclick="toggleRealFaq(this)">
+          <div><div class="real-faq-q">O lead me mandou uma mensagem muito longa em inglês e não entendi nada. O que faço?</div><div class="real-faq-meta"><span class="badge badge-blue">Processo</span> · Situação real</div></div>
+          <span class="arrow-toggle">▼</span>
+        </div>
+        <div class="real-faq-body">
+          <p>Sem pânico! Três opções:</p><br>
+          <p><strong>1. Cole no chat de Treinamento IA</strong> (aba ao lado) e pergunte: "O que esse lead está pedindo?" A IA explica em português.</p><br>
+          <p><strong>2. Use o Google Translate:</strong> Copie o texto, cole no translate.google.com e leia em português.</p><br>
+          <p><strong>3. Cole na aba ORGANIZAÇÃO</strong> e clique em "Organizar com IA" — ela extrai o que importa automaticamente.</p><br>
+          <p>Depois de entender o que ele quer, use o script correto para responder. <strong>Nunca responda sem entender o que ele pediu.</strong></p>
+        </div>
+      </div>
+
+      <div class="real-faq">
+        <div class="real-faq-header" onclick="toggleRealFaq(this)">
+          <div><div class="real-faq-q">Quanto tempo depois de criar o grupo no WhatsApp o NCDA é enviado?</div><div class="real-faq-meta"><span class="badge badge-green">Processo</span> · Automação</div></div>
+          <span class="arrow-toggle">▼</span>
+        </div>
+        <div class="real-faq-body">
+          <p>O sistema (Make.com + ZapSign) envia o NCDA automaticamente assim que o lead entra no grupo. <strong>Você não precisa fazer nada manualmente.</strong></p><br>
+          <p>O que você precisa fazer:</p>
+          <ul style="margin:8px 0 8px 20px;">
+            <li>Criar o grupo com o nome correto: "Samba x [Nome do Lead]"</li>
+            <li>Adicionar: Leonardo + Marcelo + Nívio + você</li>
+            <li>Adicionar o número do lead</li>
+          </ul>
+          <p>O restante é automático. Quando o lead assinar, avisar no grupo: "NCDA assinado ✅" e atualizar o CRM para "NCDA Assinado".</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- fim content -->
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ===================== STATE =====================
+let selectedUser = 'Jackeline';
+let chatUser = 'Jackeline';
+let chatHistory = [];
+let pastedImageBase64 = null;
+let historyItems = [];
+let userQuestionCounts = {Jackeline:0,Pedro:0,Claudio:0,Stella:0,Leonardo:0,Marcelo:0,'Nívio':0};
+
+const SAMBA_SYSTEM_PROMPT = `Você é o assistente de treinamento da Samba Export, uma trading brasileira de commodities com 15+ anos de mercado.
+
+CONTEXTO DA EMPRESA:
+- Samba Export exporta commodities do Brasil para o mundo (Ásia, Oriente Médio, Europa, Américas)
+- Portfólio: Soja, Milho, Farelo de Soja, Açúcar (ICUMSA 45/150/VHP), Algodão, Arroz, Feijão, Óleos Vegetais (CDSO, RBD), Proteínas Animais (Frango, Boi, Suíno), Brazil Flavors (Café, Açaí, Mel, Cacau), Minerais (Ferro, Lítio), Etanol
+- Certificações: GACC, FDA, DG SANTE, GAFTA 100, FOSFA 54, Halal, Kosher, ISO 9001
+- Sócios: Leonardo Brunelli (lbd@), Nívio Domingues (nmd@), Marcelo Magalhães (marcelo.magalhaes@)
+- Portais logísticos: Arco Norte (Outeiro/Barcarena), Santos, Paranaguá
+
+QUEM ESTÁ SENDO TREINADO:
+A equipe operacional (Jackeline, Pedro, Claudio, Stella) vai operar os Linkedins dos sócios. Eles não sabem nada de commodities ou vendas internacionais. Seu papel é ensinar do zero com linguagem simples.
+
+PROCESSO DE VENDAS:
+1. LinkedIn: identificar perfil (Engajador = Finder / Comprador = Qualificar)
+2. Qualificação: perguntar commodity, volume, porto destino, CIF ou FOB, instrumento de pagamento
+3. Migrar para WhatsApp: criar grupo "Samba x [Nome]" com os 3 sócios
+4. NCDA automático via ZapSign
+5. Sócios assumem: FCO → SPA → Instrumento Financeiro → Embarque
+6. Equipe NUNCA define preços — sempre passa para os sócios
+
+SCRIPTS PRINCIPAIS:
+- Script A: pós-conexão ativa (nós pedimos, ele aceitou) — apresentação inicial
+- Script D: lead mostrou interesse em produto → pedir 3 informações antes de qualquer PDF
+- Script E: migrar para WhatsApp
+- Script F: follow-up após 7 dias de silêncio
+- Script G: pitch Finder para engajadores
+
+TERMOS IMPORTANTES:
+- MT = Tonelada Métrica (1000 kg)
+- CIF = Custo + Seguro + Frete incluídos (Samba paga até o porto do comprador)
+- FOB = Samba coloca no navio, comprador paga o resto
+- ICUMSA 45 = açúcar branco refinado premium
+- CDSO = Crude Degummed Soybean Oil = Óleo de Soja Bruto
+- RBD = Óleo de Soja Refinado
+- GMO = Organismo Geneticamente Modificado
+- DLC MT700 = Carta de Crédito Documentária (garantia bancária)
+- SBLC MT760 = Carta de Crédito Standby
+- FCO = Full Corporate Offer = Proposta completa formal
+- SPA = Sales & Purchase Agreement = Contrato de compra e venda
+- NCDA = Non-Circumvention Non-Disclosure Agreement = Contrato de confidencialidade
+- SGS/BV/Intertek = empresas de inspeção independente
+
+REGRAS QUE A EQUIPE DEVE SEGUIR:
+1. Nunca mandar PDF sem saber: commodity, volume, porto destino
+2. Responder em até 24 horas
+3. Toda mensagem termina com próximo passo concreto
+4. Scripts em inglês = copiar e colar, nunca improvisar
+5. Quem não é comprador → apresentar Programa Finder
+6. Sem NCDA assinado = sem negociação
+
+PROGRAMA FINDER:
+- Finder indica comprador, Samba faz tudo
+- Comissão: 10-30% sobre margem por até 36 meses
+- Zero investimento, zero conflito de interesses
+- Exemplo: Soja 50.000 ton → Finder recebe R$26k a R$78k
+
+INSTRUÇÃO DE RESPOSTA:
+- Responda SEMPRE em português brasileiro
+- Use linguagem simples como se explicasse para alguém sem experiência
+- Seja encorajador e positivo
+- Quando for sobre processo, dê o passo a passo
+- Quando for sobre termo técnico, explique com analogia simples
+- Se a dúvida for sobre preço específico, diga que preços são confirmados pelos sócios
+- Máximo 300 palavras por resposta a menos que precisar de mais para explicar bem
+- Use emojis ocasionalmente para tornar mais amigável`;
+
+// ===================== TAB NAVIGATION =====================
+function showTab(id, btn) {
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ===================== USER SELECTION =====================
+function selectUser(btn, name) {
+  document.querySelectorAll('#userSelector .user-btn').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+  selectedUser = name;
+}
+
+function selectChatUser(el, name, initials, color) {
+  document.querySelectorAll('.user-card-chat').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+  chatUser = name;
+  document.getElementById('chatUserName').textContent = name;
+  // Update avatar color in header
+}
+
+// ===================== PASTE HANDLING =====================
+function handlePaste(e) {
+  const items = e.clipboardData?.items;
+  if (!items) return;
+  for (let item of items) {
+    if (item.type.startsWith('image/')) {
+      const blob = item.getAsFile();
+      const reader = new FileReader();
+      reader.onload = function(ev) {
+        pastedImageBase64 = ev.target.result;
+        const img = document.getElementById('pastedImage');
+        img.src = pastedImageBase64;
+        img.classList.add('show');
+        document.getElementById('pasteZone').classList.add('has-image');
+        showToast('🖼️ Imagem colada!');
+      };
+      reader.readAsDataURL(blob);
+    }
+  }
+  setTimeout(updateCharCount, 100);
+}
+
+function updateCharCount() {
+  const txt = document.getElementById('pasteText').value;
+  const el = document.getElementById('charCount');
+  if (txt.length > 0) el.textContent = txt.length + ' caracteres';
+  else el.textContent = '';
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('pasteText').addEventListener('input', updateCharCount);
+});
+
+// ===================== PROCESS WITH AI =====================
+async function processarIA() {
+  const text = document.getElementById('pasteText').value.trim();
+  const hasImage = pastedImageBase64 !== null;
+
+  if (!text && !hasImage) {
+    showToast('⚠️ Cole algum texto ou imagem primeiro!', 'warn');
+    return;
+  }
+
+  const btn = document.getElementById('btnProcessar');
+  const loading = document.getElementById('loadingDots');
+  btn.disabled = true;
+  btn.textContent = 'Processando...';
+  loading.classList.add('show');
+
+  const outputBody = document.getElementById('outputBody');
+  outputBody.innerHTML = '<div style="text-align:center;padding:30px;"><div style="font-size:32px;margin-bottom:12px;">⚡</div><div style="color:var(--text-light);">A IA está organizando as informações...</div></div>';
+
+  try {
+    const messages = [];
+    if (hasImage) {
+      const base64Data = pastedImageBase64.split(',')[1];
+      const mediaType = pastedImageBase64.split(';')[0].split(':')[1];
+      messages.push({
+        role: 'user',
+        content: [
+          { type: 'image', source: { type: 'base64', media_type: mediaType, data: base64Data } },
+          { type: 'text', text: text || 'Extraia todas as informações de negócio desta imagem.' }
+        ]
+      });
+    } else {
+      messages.push({ role: 'user', content: text });
+    }
+
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: `Você é um extrator de dados de CRM para a Samba Export, uma trading de commodities brasileira.
+Analise o texto/imagem fornecido e extraia informações de negócio no formato JSON com exatamente estes campos:
+{
+  "nome": "nome da pessoa",
+  "empresa": "nome da empresa",
+  "cargo": "cargo/função",
+  "pais": "país de origem",
+  "commodity": "produto que quer comprar",
+  "volume": "volume pedido em MT ou outra unidade",
+  "porto_destino": "porto de destino",
+  "condicao": "CIF ou FOB",
+  "pagamento": "instrumento de pagamento",
+  "status": "Novo/Em Contato/Qualificado/etc",
+  "perfil": "Comprador ou Engajador/Finder",
+  "proximo_passo": "qual deve ser a próxima ação",
+  "observacoes": "outros detalhes relevantes",
+  "linkedin_url": "URL do LinkedIn se mencionado"
+}
+Se uma informação não estiver disponível, coloque "Não informado".
+Retorne APENAS o JSON, sem texto antes ou depois.`,
+        messages
+      })
+    });
+
+    const data = await response.json();
+    const raw = data.content?.[0]?.text || '';
+
+    let parsed;
+    try {
+      const clean = raw.replace(/```json|```/g, '').trim();
+      parsed = JSON.parse(clean);
+    } catch {
+      parsed = null;
+    }
+
+    renderOutput(parsed, raw, text);
+    document.getElementById('outputBtns').style.display = 'flex';
+
+  } catch (err) {
+    outputBody.innerHTML = `<div class="card card-orange"><strong>Erro ao processar:</strong><br><span style="font-size:11px;">${err.message}</span></div>`;
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '⚡ Organizar com IA';
+    loading.classList.remove('show');
+  }
+}
+
+function renderOutput(parsed, raw, originalText) {
+  const body = document.getElementById('outputBody');
+  if (!parsed) {
+    body.innerHTML = `<div style="font-size:12px;line-height:1.8;color:var(--text);">${raw.replace(/\n/g,'<br>')}</div>`;
+    return;
+  }
+
+  const statusColor = parsed.perfil === 'Comprador' ? 'var(--red)' : 'var(--blue)';
+  const fields = [
+    ['Nome', parsed.nome], ['Empresa', parsed.empresa], ['Cargo', parsed.cargo],
+    ['País', parsed.pais], ['Commodity', parsed.commodity], ['Volume', parsed.volume],
+    ['Porto Destino', parsed.porto_destino], ['Condição', parsed.condicao],
+    ['Pagamento', parsed.pagamento], ['Status', parsed.status]
+  ];
+
+  let html = `
+    <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;">
+      <span class="badge" style="background:${statusColor};color:#fff;font-size:12px;padding:5px 12px;">${parsed.perfil || 'Indefinido'}</span>
+      <span class="badge badge-gray">${new Date().toLocaleDateString('pt-BR')} · ${selectedUser}</span>
+    </div>
+    <div class="crm-fields">`;
+
+  fields.forEach(([label, value]) => {
+    const isEmpty = !value || value === 'Não informado';
+    html += `<div class="crm-field">
+      <div class="crm-field-label">${label}</div>
+      <div class="crm-field-value ${isEmpty?'empty':''}">${isEmpty ? 'Não informado' : value}</div>
+    </div>`;
+  });
+
+  html += `</div>
+    ${parsed.proximo_passo && parsed.proximo_passo !== 'Não informado' ? `
+    <div class="card card-orange" style="margin-top:14px;">
+      <div style="font-weight:700;font-size:12px;color:var(--orange);margin-bottom:4px;">🎯 Próximo passo</div>
+      <div style="font-size:12px;">${parsed.proximo_passo}</div>
+    </div>` : ''}
+    ${parsed.observacoes && parsed.observacoes !== 'Não informado' ? `
+    <div class="card" style="margin-top:10px;">
+      <div style="font-weight:700;font-size:12px;color:var(--text-light);margin-bottom:4px;">📝 Observações</div>
+      <div style="font-size:12px;color:var(--text);">${parsed.observacoes}</div>
+    </div>` : ''}
+    <div style="margin-top:14px;">
+      <div style="font-weight:700;font-size:11px;color:var(--text-light);margin-bottom:6px;">📋 FORMATO NOTION (copiar e colar)</div>
+      <div class="notion-block" id="notionBlock">Nome: ${parsed.nome}
+Empresa: ${parsed.empresa}
+Cargo: ${parsed.cargo}
+País: ${parsed.pais}
+Commodity: ${parsed.commodity}
+Volume: ${parsed.volume}
+Porto Destino: ${parsed.porto_destino}
+Condição: ${parsed.condicao}
+Pagamento: ${parsed.pagamento}
+Status: ${parsed.status}
+Perfil: ${parsed.perfil}
+Próximo Passo: ${parsed.proximo_passo}
+Observações: ${parsed.observacoes}
+LinkedIn: ${parsed.linkedin_url}
+Registrado por: ${selectedUser}
+Data: ${new Date().toLocaleDateString('pt-BR')}</div>
+    </div>`;
+
+  body.innerHTML = html;
+
+  // Save to window for salvar
+  window._lastParsed = parsed;
+  window._lastText = originalText;
+}
+
+function copiarNotion() {
+  const block = document.getElementById('notionBlock');
+  if (!block) return;
+  navigator.clipboard.writeText(block.textContent).then(() => showToast('✅ Copiado para o Notion!'));
+}
+
+function salvarHistorico() {
+  if (!window._lastParsed) return;
+  const item = { user: selectedUser, data: new Date().toLocaleString('pt-BR'), parsed: window._lastParsed, text: window._lastText };
+  historyItems.unshift(item);
+  renderHistory();
+  showToast('💾 Salvo no histórico!');
+}
+
+function renderHistory() {
+  const list = document.getElementById('historyList');
+  if (historyItems.length === 0) {
+    list.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text-light);font-size:12px;">Nenhum registro ainda.</div>';
+    return;
+  }
+  list.innerHTML = historyItems.slice(0,5).map(item => `
+    <div class="history-item">
+      <div class="history-meta">
+        <span class="badge badge-orange">${item.user}</span>
+        <span class="badge badge-gray">${item.data}</span>
+        ${item.parsed.perfil ? `<span class="badge" style="background:var(--blue-light);color:var(--blue);">${item.parsed.perfil}</span>` : ''}
+      </div>
+      <div class="history-text">
+        <strong>${item.parsed.nome || 'Sem nome'}</strong> · ${item.parsed.empresa || 'Sem empresa'}<br>
+        <span style="color:var(--text-light);">${item.parsed.commodity || 'Commodity não identificada'} · ${item.parsed.volume || 'Volume não informado'}</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+function limparHistorico() { historyItems = []; renderHistory(); }
+
+function limparTudo() {
+  document.getElementById('pasteText').value = '';
+  document.getElementById('pastedImage').classList.remove('show');
+  document.getElementById('pasteZone').classList.remove('has-image');
+  pastedImageBase64 = null;
+  updateCharCount();
+  document.getElementById('outputBody').innerHTML = '<div style="text-align:center;padding:40px 20px;color:var(--text-light);"><div style="font-size:48px;margin-bottom:16px;">📋</div><div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:8px;">Cole algo à esquerda e clique em "Organizar com IA"</div></div>';
+  document.getElementById('outputBtns').style.display = 'none';
+}
+
+// ===================== EXAMPLE FILLER =====================
+function preencherExemplo(tipo) {
+  const exemplos = {
+    linkedin: `Hi, I'm reaching out because I'm looking for a reliable supplier of soybean meal and soya oil. We import about 5,000 MT monthly for our animal feed factory in Vietnam, CIF Ho Chi Minh City port. Are you able to supply? Our usual payment is DLC from Bank of Asia.
+
+- David Nguyen, Director, Vina Feed Co Ltd, Ho Chi Minh City, Vietnam`,
+    whatsapp: `Conversa no WhatsApp grupo "Samba x Raj":
+Raj Kumar: Hello team, I received the NCDA and I have signed it. I am ready to discuss the sugar ICUMSA 45 deal.
+Raj Kumar: We need 20,000 MT monthly for 12 months, CIF Mumbai port.
+Raj Kumar: My company is Raj Commodities Pvt Ltd, we have DLC facility from HDFC Bank.
+Raj Kumar: When can we get the FCO?`,
+    email: `De: ahmed.al.rashid@gulf-trading.ae
+Para: commercial@sambaexport.com.br
+Assunto: Inquiry - Crude Soybean Oil CDSO
+
+Dear Samba Export Team,
+
+We are interested in importing Crude Degummed Soybean Oil from Brazil.
+Required specifications:
+- Product: CDSO (Crude Degummed Soybean Oil)  
+- Volume: 3,000 MT per shipment, monthly
+- Destination: Jebel Ali Port, Dubai, UAE
+- Incoterm: CIF Jebel Ali
+- Payment: SBLC MT760 from Emirates NBD Bank
+
+Please send your FCO at your earliest convenience.
+
+Best regards,
+Ahmed Al-Rashid
+Managing Director
+Gulf Trading International LLC`,
+    notas: `Anotações sobre lead da segunda-feira:
+- Nome: Carlos Mendez
+- Empresa: Grupo Azucarero México
+- Curtiu nosso post sobre açúcar VHP
+- Trabalha com importação de açúcar para México e América Central
+- Parece ser um trader, não o comprador final
+- Perfil LinkedIn: muita experiência em commodities agrícolas
+- Pode ser um bom Finder pois conhece vários compradores na região`
+  };
+  document.getElementById('pasteText').value = exemplos[tipo];
+  updateCharCount();
+  showToast('📝 Exemplo carregado!');
+}
+
+// ===================== CHAT =====================
+async function enviarMensagem() {
+  const input = document.getElementById('chatInput');
+  const msg = input.value.trim();
+  if (!msg) return;
+  input.value = '';
+  autoResize(input);
+  addChatMessage('user', msg, chatUser);
+  chatHistory.push({ role: 'user', content: msg });
+  userQuestionCounts[chatUser] = (userQuestionCounts[chatUser] || 0) + 1;
+  updateUserCounts();
+  await callChatAPI();
+}
+
+async function enviarRapido(msg) {
+  document.getElementById('chatInput').value = msg;
+  await enviarMensagem();
+}
+
+function addChatMessage(role, text, name) {
+  const container = document.getElementById('chatMessages');
+  const div = document.createElement('div');
+  div.className = `msg ${role}`;
+  const time = new Date().toLocaleTimeString('pt-BR', {hour:'2-digit',minute:'2-digit'});
+  div.innerHTML = `
+    <div class="msg-bubble">${text.replace(/\n/g,'<br>').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')}</div>
+    <div class="msg-meta">${role === 'user' ? name : 'Assistente'} · ${time}
+      ${role === 'assistant' ? `<button onclick="salvarDuvida(this)" style="margin-left:8px;background:none;border:1px solid var(--border);border-radius:4px;padding:2px 8px;cursor:pointer;font-size:10px;font-family:Montserrat,sans-serif;">💾 Salvar</button>` : ''}
+    </div>`;
+  container.appendChild(div);
+  container.scrollTop = container.scrollHeight;
+  return div;
+}
+
+async function callChatAPI() {
+  const btn = document.getElementById('btnEnviar');
+  btn.disabled = true;
+  btn.textContent = '...';
+
+  // Add typing indicator
+  const typing = document.createElement('div');
+  typing.className = 'msg assistant';
+  typing.id = 'typing';
+  typing.innerHTML = '<div class="msg-bubble" style="color:var(--text-light);"><div class="loading-dots show"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>';
+  document.getElementById('chatMessages').appendChild(typing);
+  document.getElementById('chatMessages').scrollTop = 9999;
+
+  try {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: SAMBA_SYSTEM_PROMPT,
+        messages: chatHistory
+      })
+    });
+    const data = await response.json();
+    const reply = data.content?.[0]?.text || 'Erro ao processar resposta.';
+    chatHistory.push({ role: 'assistant', content: reply });
+    document.getElementById('typing')?.remove();
+    addChatMessage('assistant', reply, 'Assistente');
+  } catch (err) {
+    document.getElementById('typing')?.remove();
+    addChatMessage('assistant', '❌ Erro de conexão. Verifique sua internet e tente novamente.', 'Sistema');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Enviar ➤';
+  }
+}
+
+function updateUserCounts() {
+  Object.keys(userQuestionCounts).forEach(name => {
+    const el = document.getElementById(`cnt_${name}`);
+    if (el) {
+      const count = userQuestionCounts[name];
+      el.textContent = count === 0 ? '0 perguntas feitas' : `${count} pergunta${count>1?'s':''} feita${count>1?'s':''}`;
+    }
+  });
+}
+
+function limparChat() {
+  chatHistory = [];
+  const container = document.getElementById('chatMessages');
+  container.innerHTML = `<div class="msg assistant"><div class="msg-bubble">Chat reiniciado! 👋 Pode fazer suas perguntas.</div><div class="msg-meta">Assistente · agora</div></div>`;
+}
+
+function checkEnter(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); enviarMensagem(); }
+}
+
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 120) + 'px';
+}
+
+// ===================== SAVE FAQ =====================
+function salvarDuvida(btn) {
+  const msgEl = btn.closest('.msg');
+  const prevMsg = msgEl.previousElementSibling;
+  const question = prevMsg?.querySelector('.msg-bubble')?.textContent || '';
+  const answer = msgEl.querySelector('.msg-bubble')?.innerHTML || '';
+
+  const savedContainer = document.getElementById('savedFaqs');
+  const firstChild = savedContainer.querySelector('.card-yellow');
+  if (firstChild) firstChild.remove();
+
+  const div = document.createElement('div');
+  div.className = 'real-faq';
+  div.innerHTML = `
+    <div class="real-faq-header" onclick="toggleRealFaq(this)">
+      <div>
+        <div class="real-faq-q">${question.slice(0,120)}${question.length>120?'...':''}</div>
+        <div class="real-faq-meta"><span class="badge badge-purple">${chatUser}</span> · ${new Date().toLocaleString('pt-BR')}</div>
+      </div>
+      <span class="arrow-toggle">▼</span>
+    </div>
+    <div class="real-faq-body">${answer}</div>`;
+  savedContainer.prepend(div);
+  showToast('✅ Dúvida salva na aba "Dúvidas Reais"!');
+  btn.textContent = '✅ Salvo';
+  btn.disabled = true;
+}
+
+// ===================== REAL FAQ TOGGLE =====================
+function toggleRealFaq(header) {
+  const body = header.nextElementSibling;
+  const arrow = header.querySelector('.arrow-toggle');
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  if (arrow) arrow.textContent = isOpen ? '▼' : '▲';
+}
+
+// ===================== TOAST =====================
+function showToast(msg, type) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.background = type === 'warn' ? 'var(--yellow)' : 'var(--green)';
+  t.style.color = type === 'warn' ? '#000' : '#fff';
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+</script>
+</body>
+</html>
