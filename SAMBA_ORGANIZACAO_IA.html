@@ -194,12 +194,24 @@ body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--text);
 .conv-list.open{display:block;}
 .conv-new-btn{width:100%;padding:7px;background:var(--orange);color:#fff;border:none;border-radius:8px;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;cursor:pointer;margin-bottom:8px;}
 .conv-new-btn:hover{background:#e07300;}
-.conv-item{padding:8px 10px;border-radius:8px;cursor:pointer;border:1px solid var(--border);margin-bottom:5px;background:var(--bg);transition:all .2s;}
+.conv-item{padding:8px 10px;border-radius:8px;cursor:pointer;border:1px solid var(--border);margin-bottom:5px;background:var(--bg);transition:border-color .2s,background .2s;}
 .conv-item:hover{border-color:var(--orange);background:var(--orange-light);}
 .conv-item.active{border-color:var(--orange);background:var(--orange-light);}
-.conv-item-title{font-size:11px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.conv-item.status-blue{border-color:var(--blue);background:var(--blue-light);}
+.conv-item.status-red{border-color:var(--red);background:var(--red-light);}
+.conv-item.status-blink{border-color:var(--red);background:var(--red-light);animation:blinkCard 1s ease-in-out infinite;}
+.conv-item.status-ok{border-color:var(--green);background:var(--green-light);}
+@keyframes blinkCard{0%,100%{opacity:1;}50%{opacity:.35;}}
+.conv-item-name{font-size:12px;font-weight:700;color:var(--black);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.conv-item-name.no-name{color:var(--yellow);font-style:italic;}
+.conv-item-title{font-size:11px;color:var(--text-light);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:1px;}
 .conv-item-date{font-size:10px;color:var(--text-light);margin-top:2px;}
 .conv-empty{font-size:11px;color:var(--text-light);text-align:center;padding:10px 0;}
+.conv-edit-form{margin-top:8px;padding-top:8px;border-top:1px solid var(--border);display:none;}
+.conv-edit-form.open{display:block;}
+.conv-edit-input{width:100%;border:1px solid var(--border);border-radius:6px;padding:5px 8px;font-size:11px;font-family:'Montserrat',sans-serif;margin-bottom:5px;outline:none;box-sizing:border-box;}
+.conv-edit-input:focus{border-color:var(--orange);}
+.conv-action-btn{font-size:10px;padding:3px 8px;border-radius:4px;border:none;cursor:pointer;font-family:'Montserrat',sans-serif;font-weight:700;}
 </style>
 </head>
 <body>
@@ -696,10 +708,38 @@ async function loadUserConversations(userName) {
     } else {
       convs.forEach(conv => {
         const date = new Date(conv.started_at).toLocaleString('pt-BR', {day:'2-digit',month:'2-digit',year:'2-digit',hour:'2-digit',minute:'2-digit'});
-        const isActive = currentConversationId === conv._id ? ' active' : '';
-        html += `<div class="conv-item${isActive}" onclick="loadConversation('${conv._id}','${userName}',this)">
+        const colorClass = getCardColorClass(conv);
+        const isActive = currentConversationId === String(conv._id) ? ' active' : '';
+
+        const nameHtml = conv.contact_name
+          ? `<span class="conv-item-name">${conv.contact_name}</span>`
+          : `<span class="conv-item-name no-name">⚠️ Nome não encontrado</span>`;
+
+        const statusBadge = conv.status === 'ok'
+          ? `<span style="background:var(--green);color:#fff;border-radius:4px;padding:1px 6px;font-size:9px;font-weight:700;margin-left:4px;">✓ OK</span>`
+          : '';
+
+        const followUpHtml = conv.follow_up_date
+          ? `<div style="font-size:10px;color:var(--text-light);margin-top:2px;">📅 ${new Date(conv.follow_up_date + 'T12:00:00').toLocaleDateString('pt-BR')}</div>`
+          : '';
+
+        html += `<div class="conv-item ${colorClass}${isActive}" id="citem_${conv._id}" onclick="loadConversation('${conv._id}','${userName}',this)">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <div style="overflow:hidden;flex:1;">${nameHtml}${statusBadge}</div>
+            <button onclick="event.stopPropagation();toggleEditForm('${conv._id}')" style="background:none;border:none;cursor:pointer;font-size:12px;padding:0 2px;flex-shrink:0;" title="Editar">✏️</button>
+          </div>
           <div class="conv-item-title">${conv.title}</div>
+          ${followUpHtml}
           <div class="conv-item-date">${date}</div>
+          <div class="conv-edit-form" id="editform_${conv._id}" onclick="event.stopPropagation()">
+            <input class="conv-edit-input" id="ename_${conv._id}" placeholder="Nome do contato" value="${conv.contact_name || ''}">
+            <input class="conv-edit-input" type="date" id="edate_${conv._id}" value="${conv.follow_up_date || ''}">
+            <div style="display:flex;gap:4px;flex-wrap:wrap;">
+              <button class="conv-action-btn" style="background:var(--orange);color:#fff;" onclick="saveConvMeta('${conv._id}','${userName}')">Salvar</button>
+              <button class="conv-action-btn" style="background:var(--green);color:#fff;" onclick="markOk('${conv._id}','${userName}')">✓ OK</button>
+              <button class="conv-action-btn" style="background:#e0e0e0;color:#555;" onclick="toggleEditForm('${conv._id}')">Cancelar</button>
+            </div>
+          </div>
         </div>`;
       });
     }
@@ -707,6 +747,43 @@ async function loadUserConversations(userName) {
   } catch {
     container.innerHTML = '<button class="conv-new-btn" onclick="startNewConversation()">+ Nova conversa</button><div class="conv-empty">Erro ao carregar.</div>';
   }
+}
+
+function getCardColorClass(conv) {
+  if (conv.status === 'ok') return 'status-ok';
+  if (!conv.follow_up_date) return '';
+  const today = new Date(); today.setHours(0,0,0,0);
+  const followUp = new Date(conv.follow_up_date + 'T12:00:00'); followUp.setHours(0,0,0,0);
+  const diff = Math.round((followUp - today) / 86400000);
+  if (diff <= 0) return 'status-blink';
+  if (diff === 1) return 'status-red';
+  if (diff === 2) return 'status-blue';
+  return '';
+}
+
+function toggleEditForm(id) {
+  const form = document.getElementById('editform_' + id);
+  if (form) form.classList.toggle('open');
+}
+
+async function saveConvMeta(id, userName) {
+  const name = document.getElementById('ename_' + id)?.value.trim() || null;
+  const date = document.getElementById('edate_' + id)?.value || null;
+  await fetch('/api/history', {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id, contact_name: name, follow_up_date: date })
+  });
+  loadUserConversations(userName);
+}
+
+async function markOk(id, userName) {
+  await fetch('/api/history', {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id, status: 'ok' })
+  });
+  loadUserConversations(userName);
 }
 
 async function loadConversation(id, userName, el) {
@@ -734,12 +811,16 @@ function startNewConversation() {
 
 async function autoSave() {
   if (chatHistory.length === 0) return;
+  const okKeywords = /\b(feito|ok|done|resolvido|conclu[íi]do|finalizado|encerrado|closed|resolved)\b/i;
+  const lastUserMsg = [...chatHistory].reverse().find(m => m.role === 'user');
+  const forceStatus = lastUserMsg && okKeywords.test(lastUserMsg.content) ? 'ok' : undefined;
   try {
     const body = {
       action: 'save',
       user_name: chatUser,
       conversation_id: currentConversationId,
-      messages: chatHistory.map(m => ({ role: m.role, content: m.content, timestamp: new Date() }))
+      messages: chatHistory.map(m => ({ role: m.role, content: m.content, timestamp: new Date() })),
+      ...(forceStatus && { force_status: forceStatus })
     };
     const res = await fetch('/api/history', {
       method: 'POST',
