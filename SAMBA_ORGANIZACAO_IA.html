@@ -346,7 +346,7 @@ body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--text);
         <div class="user-card-info">
           <div class="user-card-name">Jackeline</div>
           <div class="user-card-role">Equipe Operacional</div>
-          <div class="user-card-count" id="cnt_Jackeline">0 perguntas feitas</div>
+          <div class="user-card-count" id="cnt_Jackeline">— chats abertos</div>
         </div>
       </div>
 
@@ -355,7 +355,7 @@ body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--text);
         <div class="user-card-info">
           <div class="user-card-name">Pedro</div>
           <div class="user-card-role">Equipe Operacional</div>
-          <div class="user-card-count" id="cnt_Pedro">0 perguntas feitas</div>
+          <div class="user-card-count" id="cnt_Pedro">— chats abertos</div>
         </div>
       </div>
 
@@ -364,7 +364,7 @@ body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--text);
         <div class="user-card-info">
           <div class="user-card-name">Claudio</div>
           <div class="user-card-role">Equipe Operacional</div>
-          <div class="user-card-count" id="cnt_Claudio">0 perguntas feitas</div>
+          <div class="user-card-count" id="cnt_Claudio">— chats abertos</div>
         </div>
       </div>
 
@@ -373,7 +373,7 @@ body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--text);
         <div class="user-card-info">
           <div class="user-card-name">Stella</div>
           <div class="user-card-role">Equipe Operacional</div>
-          <div class="user-card-count" id="cnt_Stella">0 perguntas feitas</div>
+          <div class="user-card-count" id="cnt_Stella">— chats abertos</div>
         </div>
       </div>
 
@@ -692,7 +692,22 @@ function updateCharCount() {
 
 document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('pasteText').addEventListener('input', updateCharCount);
+  loadAllUserCounts();
 });
+
+async function loadAllUserCounts() {
+  const users = ['Jackeline','Pedro','Claudio','Stella'];
+  await Promise.all(users.map(async (name) => {
+    try {
+      const res = await fetch(`/api/history?user=${encodeURIComponent(name)}`);
+      const convs = await res.json();
+      if (!Array.isArray(convs)) return;
+      const open = convs.filter(c => c.status !== 'ok').length;
+      const el = document.getElementById('cnt_' + name);
+      if (el) el.textContent = open === 0 ? '0 chats abertos' : `${open} chat${open > 1 ? 's' : ''} aberto${open > 1 ? 's' : ''}`;
+    } catch { /* silently fail */ }
+  }));
+}
 
 // ===================== HISTÓRICO DE CONVERSAS =====================
 async function loadUserConversations(userName) {
@@ -784,6 +799,7 @@ async function markOk(id, userName) {
     body: JSON.stringify({ id, status: 'ok' })
   });
   loadUserConversations(userName);
+  loadAllUserCounts();
 }
 
 async function loadConversation(id, userName, el) {
@@ -830,6 +846,7 @@ async function autoSave() {
     const data = await res.json();
     if (data.conversation_id) currentConversationId = data.conversation_id;
     loadUserConversations(chatUser);
+    loadAllUserCounts();
   } catch (err) {
     console.error('Erro ao salvar conversa:', err);
   }
@@ -1161,7 +1178,7 @@ function updateUserCounts() {
     const el = document.getElementById(`cnt_${name}`);
     if (el) {
       const count = userQuestionCounts[name];
-      el.textContent = count === 0 ? '0 perguntas feitas' : `${count} pergunta${count>1?'s':''} feita${count>1?'s':''}`;
+      el.textContent = count === 0 ? '— chats abertos' : `${count} pergunta${count>1?'s':''} feita${count>1?'s':''}`;
     }
   });
 }
