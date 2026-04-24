@@ -707,7 +707,7 @@ Retorne APENAS o JSON, sem texto antes ou depois.`,
     });
 
     const data = await response.json();
-    const raw = data.content?.[0]?.text || '';
+    const raw = data.text || '';;
 
     let parsed;
     try {
