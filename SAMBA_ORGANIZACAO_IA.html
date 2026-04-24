@@ -123,8 +123,14 @@ body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--text);
 /* ========================= TREINAMENTO ========================= */
 
 /* CHAT */
-.chat-layout{display:grid;grid-template-columns:280px 1fr;gap:16px;height:calc(100vh - 220px);min-height:500px;}
-.chat-sidebar{display:flex;flex-direction:column;gap:12px;}
+.chat-layout{display:grid;grid-template-columns:200px 0px 1fr;gap:16px;height:calc(100vh - 220px);min-height:500px;transition:grid-template-columns .25s ease;}
+.chat-layout.conv-open{grid-template-columns:200px 230px 1fr;}
+.chat-sidebar{display:flex;flex-direction:column;gap:10px;}
+.conv-panel{display:flex;flex-direction:column;background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden;opacity:0;pointer-events:none;transition:opacity .2s;}
+.chat-layout.conv-open .conv-panel{opacity:1;pointer-events:all;}
+.conv-panel-header{background:var(--orange);color:#fff;padding:12px 14px;font-weight:800;font-size:12px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.conv-panel-body{flex:1;overflow-y:auto;padding:10px;}
+.chat-sidebar{display:flex;flex-direction:column;gap:10px;}
 .chat-main{display:flex;flex-direction:column;background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
 .chat-header{padding:14px 18px;background:var(--orange);color:#fff;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:space-between;}
 .chat-messages{flex:1;overflow-y:auto;padding:18px;display:flex;flex-direction:column;gap:14px;background:#fafafa;}
@@ -177,9 +183,23 @@ body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--text);
 ::-webkit-scrollbar-thumb:hover{background:#aaa;}
 
 @media(max-width:768px){
-  .grid2,.grid3,.chat-layout{grid-template-columns:1fr;}
+  .grid2,.grid3{grid-template-columns:1fr;}
+  .chat-layout,.chat-layout.conv-open{grid-template-columns:1fr;grid-template-rows:auto auto 1fr;}
+  .conv-panel{min-height:180px;}
   .content{padding:14px;}
 }
+
+/* LISTA DE CONVERSAS POR USUÁRIO */
+.conv-list{display:none;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);}
+.conv-list.open{display:block;}
+.conv-new-btn{width:100%;padding:7px;background:var(--orange);color:#fff;border:none;border-radius:8px;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;cursor:pointer;margin-bottom:8px;}
+.conv-new-btn:hover{background:#e07300;}
+.conv-item{padding:8px 10px;border-radius:8px;cursor:pointer;border:1px solid var(--border);margin-bottom:5px;background:var(--bg);transition:all .2s;}
+.conv-item:hover{border-color:var(--orange);background:var(--orange-light);}
+.conv-item.active{border-color:var(--orange);background:var(--orange-light);}
+.conv-item-title{font-size:11px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.conv-item-date{font-size:10px;color:var(--text-light);margin-top:2px;}
+.conv-empty{font-size:11px;color:var(--text-light);text-align:center;padding:10px 0;}
 </style>
 </head>
 <body>
@@ -269,7 +289,7 @@ body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--text);
       <div class="ai-output" id="outputArea">
         <div class="ai-output-header">
           <span>✨ Resultado Organizado pela IA</span>
-          <div style="display:flex;gap:8px;" id="outputBtns" style="display:none;">
+          <div style="display:none;gap:8px;" id="outputBtns">
             <button class="btn btn-sm" style="background:rgba(255,255,255,.2);color:#fff;border:none;cursor:pointer;" onclick="copiarNotion()">📋 Copiar para Notion</button>
             <button class="btn btn-sm" style="background:rgba(255,255,255,.2);color:#fff;border:none;cursor:pointer;" onclick="salvarHistorico()">💾 Salvar</button>
           </div>
@@ -304,7 +324,7 @@ body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--text);
   <div class="page-title">🤖 Treinamento com <span>IA</span></div>
   <div class="page-sub">Pergunte qualquer coisa sobre commodities, LinkedIn, vendas ou o processo da Samba Export. A IA responde como se fosse Nívio, Marcelo ou Leonardo.</div>
 
-  <div class="chat-layout">
+  <div class="chat-layout" id="chatLayout">
     <!-- SIDEBAR -->
     <div class="chat-sidebar">
       <div style="font-weight:700;font-size:12px;color:var(--orange);margin-bottom:4px;">Quem está perguntando?</div>
@@ -317,6 +337,7 @@ body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--text);
           <div class="user-card-count" id="cnt_Jackeline">0 perguntas feitas</div>
         </div>
       </div>
+
       <div class="user-card-chat" onclick="selectChatUser(this,'Pedro','PE','#1565C0')" id="cu_pedro">
         <div class="uca" style="background:#E3F2FD;color:#1565C0;">PE</div>
         <div class="user-card-info">
@@ -325,6 +346,7 @@ body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--text);
           <div class="user-card-count" id="cnt_Pedro">0 perguntas feitas</div>
         </div>
       </div>
+
       <div class="user-card-chat" onclick="selectChatUser(this,'Claudio','CL','#2E7D32')" id="cu_claudio">
         <div class="uca" style="background:#E8F5E9;color:#2E7D32;">CL</div>
         <div class="user-card-info">
@@ -333,6 +355,7 @@ body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--text);
           <div class="user-card-count" id="cnt_Claudio">0 perguntas feitas</div>
         </div>
       </div>
+
       <div class="user-card-chat" onclick="selectChatUser(this,'Stella','ST','#6A1B9A')" id="cu_stella">
         <div class="uca" style="background:#F3E5F5;color:#6A1B9A;">ST</div>
         <div class="user-card-info">
@@ -352,6 +375,17 @@ body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--text);
         <button class="quick-q" onclick="enviarRapido('O lead perguntou o preço do milho. O que respondo?')">Lead pediu preço de milho</button>
         <button class="quick-q" onclick="enviarRapido('O que é NCDA e por que precisa assinar antes de avançar?')">O que é NCDA?</button>
         <button class="quick-q" onclick="enviarRapido('Como crio o grupo no WhatsApp corretamente?')">Como criar grupo WhatsApp</button>
+      </div>
+    </div>
+
+    <!-- PAINEL DE CONVERSAS -->
+    <div class="conv-panel" id="convPanel">
+      <div class="conv-panel-header">
+        <span id="convPanelTitle">Conversas</span>
+        <button onclick="fecharConvPanel()" style="background:rgba(255,255,255,.2);border:none;color:#fff;border-radius:6px;padding:2px 8px;cursor:pointer;font-size:14px;line-height:1;">×</button>
+      </div>
+      <div class="conv-panel-body" id="convPanelBody">
+        <div class="conv-empty">Selecione um usuário.</div>
       </div>
     </div>
 
@@ -518,6 +552,7 @@ let chatHistory = [];
 let pastedImageBase64 = null;
 let historyItems = [];
 let userQuestionCounts = {Jackeline:0,Pedro:0,Claudio:0,Stella:0,Leonardo:0,Marcelo:0,'Nívio':0};
+let currentConversationId = null;
 
 const SAMBA_SYSTEM_PROMPT = `Você é o assistente de treinamento da Samba Export, uma trading brasileira de commodities com 15+ anos de mercado.
 
@@ -605,7 +640,13 @@ function selectChatUser(el, name, initials, color) {
   el.classList.add('selected');
   chatUser = name;
   document.getElementById('chatUserName').textContent = name;
-  // Update avatar color in header
+  document.getElementById('convPanelTitle').textContent = name + ' — Conversas';
+  document.getElementById('chatLayout').classList.add('conv-open');
+  loadUserConversations(name);
+}
+
+function fecharConvPanel() {
+  document.getElementById('chatLayout').classList.remove('conv-open');
 }
 
 // ===================== PASTE HANDLING =====================
@@ -640,6 +681,78 @@ function updateCharCount() {
 document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('pasteText').addEventListener('input', updateCharCount);
 });
+
+// ===================== HISTÓRICO DE CONVERSAS =====================
+async function loadUserConversations(userName) {
+  const container = document.getElementById('convPanelBody');
+  if (!container) return;
+  container.innerHTML = '<button class="conv-new-btn" onclick="startNewConversation()">+ Nova conversa</button><div class="conv-empty">Carregando...</div>';
+  try {
+    const res = await fetch(`/api/history?user=${encodeURIComponent(userName)}`);
+    const convs = await res.json();
+    let html = '<button class="conv-new-btn" onclick="startNewConversation()">+ Nova conversa</button>';
+    if (!Array.isArray(convs) || convs.length === 0) {
+      html += '<div class="conv-empty">Nenhuma conversa ainda.</div>';
+    } else {
+      convs.forEach(conv => {
+        const date = new Date(conv.started_at).toLocaleString('pt-BR', {day:'2-digit',month:'2-digit',year:'2-digit',hour:'2-digit',minute:'2-digit'});
+        const isActive = currentConversationId === conv._id ? ' active' : '';
+        html += `<div class="conv-item${isActive}" onclick="loadConversation('${conv._id}','${userName}',this)">
+          <div class="conv-item-title">${conv.title}</div>
+          <div class="conv-item-date">${date}</div>
+        </div>`;
+      });
+    }
+    container.innerHTML = html;
+  } catch {
+    container.innerHTML = '<button class="conv-new-btn" onclick="startNewConversation()">+ Nova conversa</button><div class="conv-empty">Erro ao carregar.</div>';
+  }
+}
+
+async function loadConversation(id, userName, el) {
+  try {
+    const res = await fetch(`/api/history?id=${id}`);
+    const conv = await res.json();
+    currentConversationId = id;
+    chatHistory = conv.messages.map(m => ({ role: m.role, content: m.content }));
+    const container = document.getElementById('chatMessages');
+    container.innerHTML = '';
+    conv.messages.forEach(m => addChatMessage(m.role, m.content, m.role === 'user' ? userName : 'Assistente'));
+    document.querySelectorAll('.conv-item').forEach(c=>c.classList.remove('active'));
+    if (el) el.classList.add('active');
+  } catch {
+    showToast('Erro ao carregar conversa.', 'warn');
+  }
+}
+
+function startNewConversation() {
+  currentConversationId = null;
+  chatHistory = [];
+  document.getElementById('chatMessages').innerHTML = `<div class="msg assistant"><div class="msg-bubble">Nova conversa iniciada! 👋 Pode fazer suas perguntas.</div><div class="msg-meta">Assistente · agora</div></div>`;
+  document.querySelectorAll('.conv-item').forEach(c=>c.classList.remove('active'));
+}
+
+async function autoSave() {
+  if (chatHistory.length === 0) return;
+  try {
+    const body = {
+      action: 'save',
+      user_name: chatUser,
+      conversation_id: currentConversationId,
+      messages: chatHistory.map(m => ({ role: m.role, content: m.content, timestamp: new Date() }))
+    };
+    const res = await fetch('/api/history', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    const data = await res.json();
+    if (data.conversation_id) currentConversationId = data.conversation_id;
+    loadUserConversations(chatUser);
+  } catch (err) {
+    console.error('Erro ao salvar conversa:', err);
+  }
+}
 
 // ===================== PROCESS WITH AI =====================
 async function processarIA() {
@@ -952,6 +1065,7 @@ async function callChatAPI() {
     chatHistory.push({ role: 'assistant', content: reply });
     document.getElementById('typing')?.remove();
     addChatMessage('assistant', reply, 'Assistente');
+    autoSave();
   } catch (err) {
     document.getElementById('typing')?.remove();
     addChatMessage('assistant', '❌ Erro de conexão. Verifique sua internet e tente novamente.', 'Sistema');
@@ -972,9 +1086,11 @@ function updateUserCounts() {
 }
 
 function limparChat() {
+  currentConversationId = null;
   chatHistory = [];
   const container = document.getElementById('chatMessages');
   container.innerHTML = `<div class="msg assistant"><div class="msg-bubble">Chat reiniciado! 👋 Pode fazer suas perguntas.</div><div class="msg-meta">Assistente · agora</div></div>`;
+  document.querySelectorAll('.conv-item').forEach(el=>el.classList.remove('active'));
 }
 
 function checkEnter(e) {
