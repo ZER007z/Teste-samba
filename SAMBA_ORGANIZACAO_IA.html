@@ -377,6 +377,33 @@ body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--text);
         </div>
       </div>
 
+      <div class="user-card-chat" onclick="selectChatUser(this,'Leonardo','LB','#E65100')" id="cu_leonardo">
+        <div class="uca" style="background:#FBE9E7;color:#E65100;">LB</div>
+        <div class="user-card-info">
+          <div class="user-card-name">Leonardo</div>
+          <div class="user-card-role">Sócio</div>
+          <div class="user-card-count" id="cnt_Leonardo">— chats abertos</div>
+        </div>
+      </div>
+
+      <div class="user-card-chat" onclick="selectChatUser(this,'Nívio','ND','#00695C')" id="cu_nivio">
+        <div class="uca" style="background:#E0F2F1;color:#00695C;">ND</div>
+        <div class="user-card-info">
+          <div class="user-card-name">Nívio</div>
+          <div class="user-card-role">Sócio</div>
+          <div class="user-card-count" id="cnt_Nívio">— chats abertos</div>
+        </div>
+      </div>
+
+      <div class="user-card-chat" onclick="selectChatUser(this,'Marcelo','MM','#4527A0')" id="cu_marcelo">
+        <div class="uca" style="background:#EDE7F6;color:#4527A0;">MM</div>
+        <div class="user-card-info">
+          <div class="user-card-name">Marcelo</div>
+          <div class="user-card-role">Sócio</div>
+          <div class="user-card-count" id="cnt_Marcelo">— chats abertos</div>
+        </div>
+      </div>
+
       <div style="border-top:1px solid var(--border);padding-top:12px;margin-top:4px;">
         <div style="font-weight:700;font-size:11px;color:var(--text-light);margin-bottom:8px;">💡 Perguntas rápidas</div>
         <button class="quick-q" onclick="enviarRapido('O que é CIF e FOB? Explica simples.')">O que é CIF e FOB?</button>
@@ -696,7 +723,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 async function loadAllUserCounts() {
-  const users = ['Jackeline','Pedro','Claudio','Stella'];
+  const users = ['Jackeline','Pedro','Claudio','Stella','Leonardo','Nívio','Marcelo'];
   await Promise.all(users.map(async (name) => {
     try {
       const res = await fetch(`/api/history?user=${encodeURIComponent(name)}`);
