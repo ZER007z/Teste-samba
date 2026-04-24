@@ -948,7 +948,7 @@ async function callChatAPI() {
       })
     });
     const data = await response.json();
-    const reply = data.content?.[0]?.text || 'Erro ao processar resposta.';
+    const reply = data.text || 'Erro ao processar resposta.';
     chatHistory.push({ role: 'assistant', content: reply });
     document.getElementById('typing')?.remove();
     addChatMessage('assistant', reply, 'Assistente');
