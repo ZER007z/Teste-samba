@@ -680,7 +680,7 @@ async function processarIA() {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
+        model: 'claude-sonnet-4-5',
         max_tokens: 1000,
         system: `Você é um extrator de dados de CRM para a Samba Export, uma trading de commodities brasileira.
 Analise o texto/imagem fornecido e extraia informações de negócio no formato JSON com exatamente estes campos:
@@ -941,7 +941,7 @@ async function callChatAPI() {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
+        model: 'claude-sonnet-4-5',
         max_tokens: 1000,
         system: SAMBA_SYSTEM_PROMPT,
         messages: chatHistory
