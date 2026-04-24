@@ -1,10 +1,22 @@
-import { MongoClient, ObjectId } from 'mongodb';
+import { MongoClient, ObjectId, ServerApiVersion } from 'mongodb';
+
+const clientOptions = {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: false,
+    deprecationErrors: false,
+  },
+  tls: true,
+  serverSelectionTimeoutMS: 10000,
+  connectTimeoutMS: 10000,
+};
 
 let cachedClient = null;
 
 async function getClient() {
-  if (cachedClient) return cachedClient;
-  const client = new MongoClient(process.env.MONGODB_URI);
+  if (cachedClient?.topology?.isConnected()) return cachedClient;
+  cachedClient = null;
+  const client = new MongoClient(process.env.MONGODB_URI, clientOptions);
   await client.connect();
   cachedClient = client;
   return client;
